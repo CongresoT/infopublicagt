@@ -11,6 +11,7 @@ use App\NumeralTrack;
 use App\Numeral;
 use App\Subject;
 use App\RoundTrackNumeral;
+use App\Indicator;
 
 
 class Visualization extends Controller
@@ -320,9 +321,51 @@ class Visualization extends Controller
 		if ($qtyLow>0)
 			$promLow = $sumLow/$qtyLow;
 		
-		
 		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow]);
+	}
+	
+	public function subjectPDF($subject_id, $round_id=null){
+		set_time_limit(0);
+		$subject = Subject::find($subject_id);
+		if(!$subject)
+			dd("404 Not Found");
+		if ($round_id == null){
+			$round = Round::orderby('created_at', 'desc')->first();
+		}
+		else{
+			$round = Round::find($round_id);
+			if (!$round)
+				dd("404 Not Found");
+		}
+		$tracks = Track::where('round_id', $round->id)
+				->orderby('score','desc')
+				->get();
+		$ranking = 0;
+		$score = 0;
+		foreach($tracks as $track){
+			$ranking += 1;
+			if($track->subject_id == $subject->id){
+				$score = $track->score;
+				break;
+			}
+		}
+		$track = Track::where('round_id', $round->id)
+						->where('subject_id', $subject->id)
+						->first();
+		if (!$track)
+			dd("404 not Found");
+		$rtns = RoundTrackNumeral::where('track_id',$track->id)
+									->orderby('score','desc')
+									->get();
+		
+		$indicators = Indicator::all();
+		
+		//return view('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$this->higher, 'medium'=>$this->medium]);
+		
+		$pdf = \PDF::loadView('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$this->higher, 'medium'=>$this->medium]);
+		return $pdf->stream($subject->name.' - '.$round->name.'.pdf');
+
 	}
 
 	public function numeral($numeral_id, $round_id=null){
@@ -400,19 +443,6 @@ class Visualization extends Controller
 		return view('numeral', ['numeral'=>$numeral, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow]);
 		
-		/*
-		$rtns = RoundTrackNumeral::where('numeral_id',$numeral->id)
-									->orderby('score','desc')
-									->get();
-		
-		foreach($rtns as $rtn){
-		}
-		
-		
-		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
-					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow]);
-					
-		*/
 
 
 	}

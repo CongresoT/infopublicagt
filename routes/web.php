@@ -46,6 +46,8 @@ Route::get('/lista_numeral/{round_id?}', 'Visualization@numSorted');
 Route::get('/avance',  function () {
     return view('advancement');
 });
+Route::get('/sujeto/{subject_id}/pdf', 'Visualization@subjectPDF');
+
 
 /*load scripts*/
 Route::get('load', 'Load@excel');
