@@ -69,8 +69,8 @@
             </div>
             <div class="col-xs-4">
                 <div id="advancement" class="center-block">
-                    <div class="arrow-up-temp col-xs-1"></div>
-                    <div class="progress-qty-green col-xs-1" style="margin-left:10px;"></div>
+                    <span @if($advancement > 0) class="arrow-up col-xs-1" @elseif($advancement < 0) class="arrow-down col-xs-1" @else  class="col-xs-1" @endif></span>
+                    <div @if($advancement > 0) class="progress-qty-green" @elseif($advancement < 0) class="progress-qty-red" @else  class="progress-qty-yellow" @endif style="margin-left:65px;">@if(isset($advancement)){{ number_format(abs($advancement),1) }}%@endif</div>
                 </div>
             </div>
             <div class="col-xs-12 center-block">

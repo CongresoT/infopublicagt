@@ -258,19 +258,34 @@ class Visualization extends Controller
 		if(!$subject)
 			dd("404 Not Found");
 		if ($round_id == null){
-			$round = Round::where('is_done', True)
-							->orderby('created_at', 'desc')->first();
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
 		}
 		else{
-			$round = Round::find($round_id);
-			if (!$round)
-				dd("404 Not Found");
+			$rounds = Round::where([
+										['is_done', '=', True],
+										['id', '<=', $round_id]
+									])
+							->orWhere([
+										['id', '=', $round_id]
+									  ])
+							->orderby('created_at','desc')
+							->get();
 		}
+		if ($rounds->isEmpty())
+				dd("404 not found");
+		$round = $rounds->get(0);
+		$round_previous = $rounds->get(1);
+		
+
 		$tracks = Track::where('round_id', $round->id)
 				->orderby('score','desc')
 				->get();
 		$ranking = 0;
 		$score = 0;
+		$advancement = Null;
+		//get the ranking
 		foreach($tracks as $track){
 			$ranking += 1;
 			if($track->subject_id == $subject->id){
@@ -278,11 +293,21 @@ class Visualization extends Controller
 				break;
 			}
 		}
+		//get the track info
 		$track = Track::where('round_id', $round->id)
 						->where('subject_id', $subject->id)
 						->first();
 		if (!$track)
 			dd("404 not Found");
+		//get the score of the previous track if exists
+		if ($round_previous != null){
+			$track_previous = Track::where('round_id', $round_previous->id)
+								->where('subject_id', $subject->id)
+								->first();
+			if ($track_previous != null){
+				$advancement = $score - $track_previous->score;
+			}
+		}
 		$rtns = RoundTrackNumeral::where('track_id',$track->id)
 									->orderby('score','desc')
 									->get();
@@ -327,7 +352,7 @@ class Visualization extends Controller
 			$promLow = $sumLow/$qtyLow;
 		
 		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
-					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow]);
+					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement]);
 	}
 	
 	public function subjectPDF($subject_id, $round_id=null){
@@ -379,19 +404,32 @@ class Visualization extends Controller
 		if(!$numeral)
 			dd("404 Not Found");
 		if ($round_id == null){
-			$round = Round::where('is_done', True)
-							->orderby('created_at', 'desc')->first();
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
 		}
 		else{
-			$round = Round::find($round_id);
-			if (!$round)
-				dd("404 Not Found");
+			$rounds = Round::where([
+										['is_done', '=', True],
+										['id', '<=', $round_id]
+									])
+							->orWhere([
+										['id', '=', $round_id]
+									  ])
+							->orderby('created_at','desc')
+							->get();
 		}
+		if ($rounds->isEmpty())
+				dd("404 not found");
+		$round = $rounds->get(0);
+		$round_previous = $rounds->get(1);
+
 		$tracks = NumeralTrack::where('round_id', $round->id)
 				->orderby('score','desc')
 				->get();
 		$ranking = 0;
 		$score = 0;
+		//get the ranking of the numeral
 		foreach($tracks as $track){
 			$ranking += 1;
 			if($track->numeral_id == $numeral->id){
@@ -399,9 +437,22 @@ class Visualization extends Controller
 				break;
 			}
 		}
+		//get the score of the previous round
+		$advancement = Null;
+		if ($round_previous != null){
+			$track_previous = NumeralTrack::where('round_id', $round_previous->id)
+								->where('numeral_id', $numeral->id)
+								->first();
+			if ($track_previous != null){
+				$advancement = $score - $track_previous->score;
+			}
+		}
+
 		
 		$tracks = Track::where('round_id',$round->id)
 						->get();
+						
+		//get the info for each subject 
 		$trackIds = [];
 		foreach($tracks as $track) {
 			array_push($trackIds, $track->id);
@@ -448,7 +499,7 @@ class Visualization extends Controller
 			$promLow = $sumLow/$qtyLow;
 
 		return view('numeral', ['numeral'=>$numeral, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
-					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow]);
+					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement]);
 		
 
 
