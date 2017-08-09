@@ -37,16 +37,20 @@ Route::get('/lista_so', function () {
 });
 
 /*visualizations*/
+
 Route::get('/cumplimiento_so/{round_id?}', 'Visualization@fulfillment');
 Route::get('/sector/{round_id?}', 'Visualization@sector');
 Route::get('/cumplimiento_num/{round_id?}', 'Visualization@numFulfillment');
 Route::get('/sujeto/{subject_id}', 'Visualization@subject');
+Route::get('/sujeto/{subject_id}/{round_id}', 'Visualization@subject');
+Route::get('/sujeto/pdf/{subject_id}/{round_id}', 'Visualization@subjectPDF');
+Route::get('/numeral/{numeral_id}/{round_id}', 'Visualization@numeral');
 Route::get('/numeral/{numeral_id}', 'Visualization@numeral');
 Route::get('/lista_numeral/{round_id?}', 'Visualization@numSorted');
 Route::get('/avance',  function () {
     return view('advancement');
 });
-Route::get('/sujeto/{subject_id}/pdf', 'Visualization@subjectPDF');
+
 
 
 /*load scripts*/

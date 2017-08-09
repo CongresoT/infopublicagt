@@ -27,7 +27,7 @@ class Load extends Controller
         $files = File::allFiles($directory);
         $htmlResult = '';
 		//manually specify the round that is being worked on
-		$round_id = 1;
+		$round_id = 2;
 		$round = Round::find($round_id);
 		//retrieve all files in $directory
         foreach ($files as $file)
@@ -144,7 +144,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = 1;
+		$roundId = 2;
 		$numerals = Numeral::all();
 		foreach ($numerals as $numeral) {
 			$countY = 0;
@@ -188,7 +188,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = 1;		
+		$roundId = 2;		
 		$yQuestions = [];
 		$nQuestions = [];
 		$qtyNumerals = 0;

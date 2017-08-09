@@ -23,7 +23,8 @@ class Visualization extends Controller
     {
 		//get requested round, if not requested then get last one
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
@@ -77,7 +78,8 @@ class Visualization extends Controller
 		}
 		//get requested round, if not requested then get last one
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
@@ -131,7 +133,8 @@ class Visualization extends Controller
     {
 		//get requested round, if not requested then get last one
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
@@ -199,7 +202,8 @@ class Visualization extends Controller
 	public function numSorted($round_id = null){
 		//get requested round, if not requested then get last one
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
@@ -254,7 +258,8 @@ class Visualization extends Controller
 		if(!$subject)
 			dd("404 Not Found");
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
@@ -331,7 +336,8 @@ class Visualization extends Controller
 		if(!$subject)
 			dd("404 Not Found");
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
@@ -373,7 +379,8 @@ class Visualization extends Controller
 		if(!$numeral)
 			dd("404 Not Found");
 		if ($round_id == null){
-			$round = Round::orderby('created_at', 'desc')->first();
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
 		}
 		else{
 			$round = Round::find($round_id);
