@@ -448,6 +448,8 @@ class Visualization extends Controller
 				break;
 			}
 		}
+		
+		
 		//get the score of the previous round
 		$advancement = Null;
 		if ($round_previous != null){
@@ -458,12 +460,22 @@ class Visualization extends Controller
 				$advancement = $score - $track_previous->score;
 			}
 		}
-
+		
+		
+		//get the tracks for the selected rounds, and pack it in one variable to send to the view for the "histogram" visualization
+		$roundIds = [];
+		foreach($rounds as $round){
+			array_push($roundIds, $round->id);
+		}
+		$tracksNumeral = NumeralTrack::where('numeral_id',$numeral->id)
+								->whereIn('round_id',$roundIds)
+								->with('round')
+								->get();
+		//get the info for each subject 
+		
 		
 		$tracks = Track::where('round_id',$round->id)
 						->get();
-						
-		//get the info for each subject 
 		$trackIds = [];
 		foreach($tracks as $track) {
 			array_push($trackIds, $track->id);
@@ -510,7 +522,8 @@ class Visualization extends Controller
 			$promLow = $sumLow/$qtyLow;
 
 		return view('numeral', ['numeral'=>$numeral, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
-					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement]);
+					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
+					'tracksNumeral' => $tracksNumeral]);
 		
 
 
