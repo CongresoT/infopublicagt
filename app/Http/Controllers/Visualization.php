@@ -308,6 +308,16 @@ class Visualization extends Controller
 				$advancement = $score - $track_previous->score;
 			}
 		}
+		//get the tracks for the selected rounds, and pack it in one variable to send to the view for the "histogram" visualization
+		$roundIds = [];
+		foreach($rounds as $round){
+			array_push($roundIds, $round->id);
+		}
+		$tracksSubject = Track::where('subject_id',$subject->id)
+								->whereIn('round_id',$roundIds)
+								->with('round')
+								->get();
+		//get info of the cumpl in each numeral
 		$rtns = RoundTrackNumeral::where('track_id',$track->id)
 									->orderby('score','desc')
 									->get();
@@ -352,7 +362,8 @@ class Visualization extends Controller
 			$promLow = $sumLow/$qtyLow;
 		
 		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
-					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement]);
+					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
+					'tracksSubject' => $tracksSubject]);
 	}
 	
 	public function subjectPDF($subject_id, $round_id=null){
