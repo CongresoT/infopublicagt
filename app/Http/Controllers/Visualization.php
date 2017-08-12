@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Track;
 use App\Round;
 use App\Sector;
@@ -524,8 +525,70 @@ class Visualization extends Controller
 		return view('numeral', ['numeral'=>$numeral, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
 					'tracksNumeral' => $tracksNumeral]);
+	}
+	
+	public function advancement($round_id = null){
+		if ($round_id == null){
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
+		}
+		else{
+			$rounds = Round::where([
+										['is_done', '=', True],
+										['id', '<=', $round_id]
+									])
+							->orWhere([
+										['id', '=', $round_id]
+									  ])
+							->orderby('created_at','desc')
+							->get();
+		}
+		if ($rounds->isEmpty())
+			dd("404 not found");
+		$round = $rounds->get(0);
+		$round_previous = $rounds->get(1);
+		if ($round_previous == null)
+			dd("No hay monitoreo anterior para comparar");
 		
+		$tracks = DB::table('subjects')
+					->join('tracks as r1', function($join) use($round){
+										$join->on('subjects.id', '=', 'r1.subject_id');
+									})
+					->join('tracks as r2', function($join) use($round_previous){
+										$join->on('subjects.id', '=', 'r2.subject_id');
+									})
+					->where('r1.round_id', $round->id)
+					->where('r2.round_id', $round_previous->id)
+					->orderby('advancement', 'desc')
+					->select('subjects.*', 'r1.score as new_score', 'r2.score as old_score', DB::raw('(r1.score - r2.score) as advancement'))
+					->get();
+		
+		$subjectsUp = [];
+		$subjectsEqual = [];
+		$subjectsDown = [];
+		$upCount = 0;
+		$equalCount = 0;
+		$downCount = 0;
 
-
+		foreach($tracks as $track){
+			if ($track->advancement > 0){
+				array_push($subjectsUp, $track);
+				$upCount++;
+			}
+			elseif($track->advancement < 0){
+				array_push($subjectsDown, $track);
+				$downCount++;
+			}
+			else{
+				array_push($subjectsEqual, $track);
+				$equalCount++;
+			}
+		}
+		$upPerc = ($upCount * 100)/($upCount+$downCount+$equalCount);
+		$equalPerc = ($equalCount * 100)/($upCount+$downCount+$equalCount);
+		$downPerc = ($downCount * 100)/($upCount+$downCount+$equalCount);
+		
+		return view('advancement', ['round'=>$round, 'round_previous'=>$round_previous, 'subjectsUp'=>$subjectsUp, 'subjectsEqual'=>$subjectsEqual, 'subjectsDown'=>$subjectsDown, 'upPerc'=>$upPerc, 'equalPerc'=>$equalPerc, 'downPerc'=>$downPerc]);
 	}
 }
