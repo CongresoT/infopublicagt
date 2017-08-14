@@ -106,10 +106,17 @@
             .attr("transform", "translate(50, 50)")
             .style("fill", function() {
                     c++;
-                    if (c == 0)
-                        return "#32CD32"
-                    else
+                    if (c == 0) {
+						if ({{ $score }} >= {{ $higher }})
+							return "#32CD32";
+						else if({{ $score }} >= {{ $medium }})
+							return "#FF8C00";
+						else
+							return "#B22222";
+					}
+                    else {
                         return "#F1F1F1";
+					}
                 });
 
         g.append("text")
