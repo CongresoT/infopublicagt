@@ -364,7 +364,7 @@ class Visualization extends Controller
 		
 		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
-					'tracksSubject' => $tracksSubject, 'higher'=>$this->higher, 'medium'=>$this->medium]);
+					'tracksSubject' => $tracksSubject, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds]);
 	}
 	
 	public function subjectPDF($subject_id, $round_id=null){
@@ -524,7 +524,7 @@ class Visualization extends Controller
 
 		return view('numeral', ['numeral'=>$numeral, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
-					'tracksNumeral' => $tracksNumeral, 'higher'=>$this->higher, 'medium'=>$this->medium]);
+					'tracksNumeral' => $tracksNumeral, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds]);
 	}
 	
 	public function advancement($round_id = null){

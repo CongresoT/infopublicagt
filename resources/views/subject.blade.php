@@ -141,6 +141,7 @@
         <div class="compInfo">Unidad de acceso: {{ $subject->uaip_person }}</div>
         <div class="compInfo">Telefono: {{ $subject->phone }}</div>
         <div class="compInfo">Correo electr&oacute;nico: {{ $subject->email }}</div>
+		<h2>{{ $rounds[0]->name }}</h2>
         <div class="row">
             <div class="col-xs-4">
                 <div id="certificate" class="center-block">
