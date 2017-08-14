@@ -672,6 +672,10 @@ text.overall {
     border-radius:5px;
 }
 
+.panel-body{
+	margin-left:25px;
+}
+
 
 /*end of visualizaciones*/
 
