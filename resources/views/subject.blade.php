@@ -7,9 +7,26 @@
 	
     var data = [
 		@foreach($tracksSubject as $ts)
-			{date:'{{ date("M-Y", strtotime($ts->round->year_num.str_pad($ts->round->month_num,2,"0",STR_PAD_LEFT)."01")) }}', close: {{ $ts->score }}}, 
+			{date:'{{ date("m-Y", strtotime($ts->round->year_num.str_pad($ts->round->month_num,2,"0",STR_PAD_LEFT)."01")) }}', close: {{ $ts->score }}}, 
 		@endforeach
     ];
+	
+	//localization
+	var localeDefinition = d3.timeFormatDefaultLocale({
+	  "decimal": ".",
+	  "thousands": ",",
+	  "grouping": [3],
+	  "currency": ["Q", ""],
+	  "dateTime": "%a %b %e %X %Y",
+	  "date": "%m/%d/%Y",
+	  "time": "%H:%M:%S",
+	  "periods": ["AM", "PM"],
+	  "days": ["Domingo", "Lunes", "Marates", "Miercoles", "Jueves", "Viernes", "Sabado"],
+	  "shortDays": ["Dom", "Lun", "Mar", "Mie", "Jue", "Vie", "Sab"],
+	  "months": ["Enero", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre"],
+	  "shortMonths": ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+	});	
+	d3.formatDefaultLocale(localeDefinition);
 	
     // Set the dimensions of the canvas / graph
     var margin = {top: 30, right: 20, bottom: 30, left: 50},
@@ -21,9 +38,9 @@
     var y = d3.scaleLinear().range([height, 0]);
 
     // Define the axes
-    var xAxis = d3.axisBottom(x).ticks(5);
+    var xAxis = d3.axisBottom(x).ticks({{ sizeof($tracksSubject) }});
 
-    var yAxis = d3.axisLeft(y).ticks(5);
+    var yAxis = d3.axisLeft(y).ticks(10);
         
     // Define the line
     var valueline = d3.line()
@@ -32,7 +49,7 @@
     
     var c;
 
-
+	// Draw the data
 	function draw(data){
         // Adds the svg canvas
         var svg = d3.select("#scatterplot")
@@ -44,7 +61,7 @@
                       "translate(" + margin.left + "," + margin.top + ")");
 
         // parse the date / time
-        var parseTime = d3.timeParse("%b-%Y");
+        var parseTime = d3.timeParse("%m-%Y");
         
         data.forEach(function(d) {
             d.date = parseTime(d.date);
@@ -53,7 +70,7 @@
 
         // Scale the range of the data
         x.domain(d3.extent(data, function(d) { return d.date; }));
-        y.domain([0, d3.max(data, function(d) { return d.close; })]);
+        y.domain([0, 100]);
 
         // Add the valueline path.
         svg.append("path")
