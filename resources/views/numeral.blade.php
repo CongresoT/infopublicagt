@@ -184,12 +184,14 @@
             </div>
             <div class="col-xs-4">
                 <div id="piechart" class="center-block"></div>
+				<h6 class="center-block">Cumplimiento</h6>
             </div>
             <div class="col-xs-4">
                 <div id="advancement" class="center-block">
-                    <span @if($advancement > 0) class="arrow-up col-xs-1" @elseif($advancement < 0) class="arrow-down col-xs-1" @else  class="col-xs-1" @endif></span>
-                    <div @if($advancement > 0) class="progress-qty-green" @elseif($advancement < 0) class="progress-qty-red" @else  class="progress-qty-yellow" @endif style="margin-left:65px;">@if(isset($advancement)){{ number_format(abs($advancement),1) }}%@endif</div>
+                    <span @if($advancement > 0) class="arrow-up" @elseif($advancement < 0) class="arrow-down" @else class="center-block" @endif></span>
+                    <div @if($advancement > 0) class="progress-qty-green" @elseif($advancement < 0) class="progress-qty-red" @else  class="progress-qty-yellow" @endif>@if(isset($advancement)){{ number_format(abs($advancement),1) }}%@endif</div>
                 </div>
+				<h6 class="center-block">Respecto al monitoreo anterior</h6>
             </div>
             <div class="col-xs-12 center-block">
                 <div id="scatterplot" class="center-block">
