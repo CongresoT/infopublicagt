@@ -5,7 +5,7 @@
     <div class="container">
         <h1>Comparativo entre rondas</h1>
         <h2>{{ $round->name }} - {{ $round_previous->name }}</h2>
-		<div class="subject row">
+		<div class="subjectInfo row">
             <div class="panel-group" id="topSo">
                 <div class="panel">
                     <div class="panel-heading">
@@ -18,7 +18,7 @@
                         <div class="panel-body">
                             <div class="row">
 								@foreach($subjectsUp as $subject)
-									<div class="col-xs-8">
+									<div class="col-xs-8 subjectRow">
 										<h5><a href="{{ url('/sujeto', $subject->id) }}">{{  $subject->name }}</a></h5>
 										<div class="progress-border">
 											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%"><span class="progress-text">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</span></div>
@@ -47,7 +47,7 @@
                         <div class="panel-body">
                             <div class="row">
 								@foreach($subjectsEqual as $subject)
-									<div class="col-xs-8">
+									<div class="col-xs-8 subjectRow">
 										<h5><a href="{{ url('/sujeto', $subject->id) }}">{{  $subject->name }}</a></h5>
 										<div class="progress-border">
 											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%"><span class="progress-text">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</span></div>
@@ -76,7 +76,7 @@
                         <div class="panel-body">
                             <div class="row">
 								@foreach($subjectsDown as $subject)
-									<div class="col-xs-8">
+									<div class="col-xs-8 subjectRow">
 										<h5><a href="{{ url('/sujeto', $subject->id) }}">{{  $subject->name }}</a></h5>
 										<div class="progress-border">
 											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%"><span class="progress-text">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</span></div>
