@@ -465,16 +465,15 @@ class Visualization extends Controller
 		
 		//get the tracks for the selected rounds, and pack it in one variable to send to the view for the "histogram" visualization
 		$roundIds = [];
-		foreach($rounds as $round){
-			array_push($roundIds, $round->id);
+		foreach($rounds as $roundNum){
+			array_push($roundIds, $roundNum->id);
 		}
 		$tracksNumeral = NumeralTrack::where('numeral_id',$numeral->id)
 								->whereIn('round_id',$roundIds)
 								->with('round')
 								->get();
+								
 		//get the info for each subject 
-		
-		
 		$tracks = Track::where('round_id',$round->id)
 						->get();
 		$trackIds = [];
