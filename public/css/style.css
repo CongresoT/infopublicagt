@@ -693,6 +693,12 @@ div.tooltipd3{
     border-radius: 8px;
 }
 
+.progress-text{
+	display:block;
+	width:max-content;
+	color:#282828;
+}
+
 /*end of visualizaciones*/
 
 /* backend */

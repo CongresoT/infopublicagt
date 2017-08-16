@@ -21,10 +21,10 @@
 									<div class="col-xs-8">
 										<h5><a href="{{ url('/sujeto', $subject->id) }}">{{  $subject->name }}</a></h5>
 										<div class="progress-border">
-											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</div>
+											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%"><span class="progress-text">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</span></div>
 										</div>
 										<div class="progress-border">
-											<div class="progress-gray progress-bar" style="height:24px;width:{{ $subject->old_score }}%">{{ $round_previous->name }} - {{ number_format($subject->old_score,2) }}%</div>
+											<div class="progress-gray progress-bar" style="height:24px;width:{{ $subject->old_score }}%"><span class="progress-text">{{ $round_previous->name }} - {{ number_format($subject->old_score,2) }}%</span></div>
 										</div>
 									</div>
 									<div class="arrow-up col-xs-1"></div>
@@ -50,10 +50,10 @@
 									<div class="col-xs-8">
 										<h5><a href="{{ url('/sujeto', $subject->id) }}">{{  $subject->name }}</a></h5>
 										<div class="progress-border">
-											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</div>
+											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%"><span class="progress-text">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</span></div>
 										</div>
 										<div class="progress-border">
-											<div class="progress-gray progress-bar" style="height:24px;width:{{ $subject->old_score }}%">{{ $round_previous->name }} - {{ number_format($subject->old_score,2) }}%</div>
+											<div class="progress-gray progress-bar" style="height:24px;width:{{ $subject->old_score }}%"><span class="progress-text">{{ $round_previous->name }} - {{ number_format($subject->old_score,2) }}%</span></div>
 										</div>
 									</div>
 									<div class="progress-qty-yellow col-xs-1">=</div>
@@ -79,10 +79,10 @@
 									<div class="col-xs-8">
 										<h5><a href="{{ url('/sujeto', $subject->id) }}">{{  $subject->name }}</a></h5>
 										<div class="progress-border">
-											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</div>
+											<div class="progress-blue progress-bar" style="height:24px;width:{{ $subject->new_score }}%"><span class="progress-text">{{ $round->name }} - {{ number_format($subject->new_score,2) }}%</span></div>
 										</div>
 										<div class="progress-border">
-											<div class="progress-gray progress-bar" style="height:24px;width:{{ $subject->old_score }}%">{{ $round_previous->name }} - {{ number_format($subject->old_score,2) }}%</div>
+											<div class="progress-gray progress-bar" style="height:24px;width:{{ $subject->old_score }}%"><span class="progress-text">{{ $round_previous->name }} - {{ number_format($subject->old_score,2) }}%</span></div>
 										</div>
 									</div>
 									<div class="arrow-down col-xs-1"></div>
