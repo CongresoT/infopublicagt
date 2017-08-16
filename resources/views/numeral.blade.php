@@ -77,14 +77,32 @@
 				.attr("class", "line")
 				.attr("d", valueline(data));
 
+			// Add the tooltip div
+			var tt = d3.select("body").append("div")	
+				.attr("class", "tooltipd3")				
+				.style("opacity", 0);
+				
 			// Add the scatterplot
 			svg.selectAll("dot")
 				.data(data)
 			  .enter().append("circle")
 				.attr("r", 3.5)
 				.attr("cx", function(d) { return x(d.date); })
-				.attr("cy", function(d) { return y(d.close); });
-
+				.attr("cy", function(d) { return y(d.close); })
+				.on('mouseover', function(d,i){
+					tt.transition()
+						.duration(200)
+						.style('opacity',0.9);
+					tt .html(d.close+"%")
+						.style("left",(d3.event.pageX+10)+"px")
+						.style("top",(d3.event.pageY-10)+"px");
+				})
+				.on('mouseout', function(d,i){
+					tt.transition()
+						.duration(500)
+						.style('opacity',0);
+				});
+				
 			// Add the X Axis
 			svg.append("g")
 				.attr("class", "x axis")
