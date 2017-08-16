@@ -51,51 +51,54 @@
 
 	// Draw the data
 	function draw(data){
-        // Adds the svg canvas
-        var svg = d3.select("#scatterplot")
-            .append("svg")
-                .attr("width", width + margin.left + margin.right)
-                .attr("height", height + margin.top + margin.bottom)
-            .append("g")
-                .attr("transform", 
-                      "translate(" + margin.left + "," + margin.top + ")");
+		//only display scatterplot viz if there is more than one round to show
+		@if (sizeof($tracksSubject)>1)
+			// Adds the svg canvas
+			var svg = d3.select("#scatterplot")
+				.append("svg")
+					.attr("width", width + margin.left + margin.right)
+					.attr("height", height + margin.top + margin.bottom)
+				.append("g")
+					.attr("transform", 
+						  "translate(" + margin.left + "," + margin.top + ")");
 
-        // parse the date / time
-        var parseTime = d3.timeParse("%m-%Y");
-        
-        data.forEach(function(d) {
-            d.date = parseTime(d.date);
-            d.close = +d.close;
-        });
-
-        // Scale the range of the data
-        x.domain(d3.extent(data, function(d) { return d.date; }));
-        y.domain([0, 100]);
-
-        // Add the valueline path.
-        svg.append("path")
-            .attr("class", "line")
-            .attr("d", valueline(data));
-
-        // Add the scatterplot
-        svg.selectAll("dot")
-            .data(data)
-          .enter().append("circle")
-            .attr("r", 3.5)
-            .attr("cx", function(d) { return x(d.date); })
-            .attr("cy", function(d) { return y(d.close); });
-
-        // Add the X Axis
-        svg.append("g")
-            .attr("class", "x axis")
-            .attr("transform", "translate(0," + height + ")")
-            .call(xAxis);
-
-        // Add the Y Axis
-        svg.append("g")
-            .attr("class", "y axis")
-            .call(yAxis);
+			// parse the date / time
+			var parseTime = d3.timeParse("%m-%Y");
 			
+			data.forEach(function(d) {
+				d.date = parseTime(d.date);
+				d.close = +d.close;
+			});
+
+			// Scale the range of the data
+			x.domain(d3.extent(data, function(d) { return d.date; }));
+			y.domain([0, 100]);
+
+			// Add the valueline path.
+			svg.append("path")
+				.attr("class", "line")
+				.attr("d", valueline(data));
+
+			// Add the scatterplot
+			svg.selectAll("dot")
+				.data(data)
+			  .enter().append("circle")
+				.attr("r", 3.5)
+				.attr("cx", function(d) { return x(d.date); })
+				.attr("cy", function(d) { return y(d.close); });
+
+			// Add the X Axis
+			svg.append("g")
+				.attr("class", "x axis")
+				.attr("transform", "translate(0," + height + ")")
+				.call(xAxis);
+
+			// Add the Y Axis
+			svg.append("g")
+				.attr("class", "y axis")
+				.call(yAxis);
+		@endif
+		
         //piechart
         chartDiv = d3.select("#piechart");
                 
