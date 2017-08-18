@@ -649,7 +649,7 @@ footer .footer-below {
 }
 
 #scatterplot {
-    margin-top:75px;
+    margin-top:30px;
     max-width:600px;
 }
 
@@ -718,6 +718,63 @@ div.tooltipd3{
 
 h6.center-block{
 	text-align:center;
+}
+.gp-element {
+	margin-top:0px;
+}
+.glyphicon-ok{
+	font-size:1em;
+	color:#32CD32;
+	float:left;
+	margin-right:10px;
+}
+.glyphicon-remove{
+	font-size:1em;
+	color:#B22222;
+	float:left;
+	margin-right:10px;
+}
+.glyphicon-star {
+	margin-top:15px;
+	font-size:8em;
+	position:relative;
+}
+.zero:before, .one:before, .two:before, .three:before, .four:before, .five:before {
+	content: "\e006"; /* put here default icon code*/
+	display: block;
+	position: absolute;
+	overflow: hidden;	
+	color:#FFD700;
+}
+.zero:after, .one:after, .two:after, .three:after, .four:after, .five:after {
+	content: "\e006"; /* put here icon-empty code*/
+	color:#D1D1D1;
+}
+.zero:before{
+	width:0%;
+}
+.one:before {
+	width:20%;
+}
+.two:before{
+	width:40%;
+}
+.three:before{
+	width:60%;
+}
+.four:before{
+	width:80%;
+}
+.five:before{
+	width:100%;
+}
+#goodPractices{
+	margin-top:25px;
+	background:#F1F1F1;
+}
+.gp-title{
+	text-align:center;
+	margin-bottom:15px;
 }
 
 /*end of visualizaciones*/

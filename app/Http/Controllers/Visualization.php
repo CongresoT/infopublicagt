@@ -335,9 +335,10 @@ class Visualization extends Controller
 		$promTop = 0;
 		$promMid = 0;
 		$promLow = 0;
+
 		foreach($rtns as $rtn){
-			//exclude numeral_id=56 "buenas practicas"
-			if ($rtn->numeral_id == 56)
+			//exclude numeral_id=56 "buenas practicas" as it has different kind of visualization
+			if ($rtn->numeral_id == 56) 
 				continue;
 			if ($rtn->score >= $this->higher){
 				array_push($topSo, $rtn);
@@ -362,9 +363,44 @@ class Visualization extends Controller
 		if ($qtyLow>0)
 			$promLow = $sumLow/$qtyLow;
 		
+		
+		//get good practices
+		$goodPractices = [];
+		$goodPractices[0] = 'NA';
+		$goodPractices[1] = 'NA';
+		$goodPractices[2] = 'NA';
+		$goodPractices[3] = 'NA';
+		$goodPractices[4] = 'NA';
+		$gpYCount = 0;
+		$gps = DB::table('questions')
+					->join('indicators as i', function($join) use($round) {
+												$join->on('questions.indicator_id','=','i.id');
+											})
+					->where('track_id', $track->id)
+					->where('i.numeral_id',56)
+					->orderby('questions.indicator_id', 'asc')
+					->select('questions.indicator_id', 'questions.answer')
+					->get();
+		$i = 0;
+		foreach($gps as $gp){
+			$goodPractices[$i] = $gp->answer;
+			if($gp->answer == 'Y')
+				$gpYCount++;
+			$i++;
+		}
+		switch($gpYCount){
+			case 0: $gpClass="zero"; break;
+			case 1: $gpClass="one"; break;
+			case 2: $gpClass="two"; break;
+			case 3: $gpClass="three"; break;
+			case 4: $gpClass="four"; break;
+			case 5: $gpClass="five"; break;
+		}
+		
 		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
-					'tracksSubject' => $tracksSubject, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds]);
+					'tracksSubject' => $tracksSubject, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds, 'goodPractices'=>$goodPractices,
+					'gpClass'=>$gpClass]);
 	}
 	
 	public function subjectPDF($subject_id, $round_id=null){

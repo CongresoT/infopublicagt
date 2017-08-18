@@ -199,6 +199,25 @@
                 </div>
 				<h6 class="center-block">Respecto al monitoreo anterior</h6>
             </div>
+			<div class="col-xs-12">
+				<div id="goodPractices" class="row">
+					<div class="col-xs-12 center-block">
+						<h5 class="gp-title">Buenas Practicas</h5>
+					</div>
+					<div class="hidden-xs col-md-3 col-lg-2"></div>
+					<div class="col-xs-6 col-md-3 col-lg-4">
+						<div class="glyphicon glyphicon-star {{ $gpClass }}"></div>
+					</div>
+					<div class="col-xs-6 col-md-3 col-lg-4">
+						<div @if($goodPractices[0] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[0] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información en formatos editables</h6>
+						<div @if($goodPractices[1] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[1] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información desglosada por género</h6>
+						<div @if($goodPractices[2] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[2] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información en idiomas mayas</h6>
+						<div @if($goodPractices[3] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[3] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información histórica</h6>
+						<div @if($goodPractices[4] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[4] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información fácil de encontrar</h6>	
+					</div>
+					<div class="hidden-xs col-md-3 col-lg-2"></div>
+				</div>
+			</div>
             <div class="col-xs-12 center-block">
                 <div id="scatterplot" class="center-block">
                 </div>
