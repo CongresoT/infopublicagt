@@ -13,7 +13,7 @@ use App\Numeral;
 use App\Subject;
 use App\RoundTrackNumeral;
 use App\Indicator;
-
+use Illuminate\Support\Facades\Route;
 
 class Visualization extends Controller
 {
@@ -23,15 +23,22 @@ class Visualization extends Controller
     public function fulfillment($round_id = null)
     {
 		//get requested round, if not requested then get last one
+		$rounds = null;
 		if ($round_id == null){
-			$round = Round::where('is_done', True)
-							->orderby('created_at', 'desc')->first();
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
+			if ($rounds->isEmpty())
+					dd("404 not found");
+			$round = $rounds->get(0);
 		}
 		else{
 			$round = Round::find($round_id);
 			if (!$round)
 				dd("404 Not Found");
 		}
+		
+		
 		$tracks = Track::where('round_id', $round->id)
 						->orderby('score','desc')
 						->get();
@@ -64,7 +71,20 @@ class Visualization extends Controller
 		$proms[0] = ($highCount>0?$highSum/$highCount:0);
 		$proms[1] = ($mediumCount>0?$mediumSum/$mediumCount:0);
 		$proms[2] = ($lowCount>0?$lowSum/$lowCount:0);
-		return view('fulfillment_subject', ['round' => $round, 'proms' => $proms, 'highTr' => $trHigh, 'mediumTr' => $trMedium, 'lowTr' => $trLow]);
+		
+		//get available rounds to show on the select box
+		if ($round_id == null){
+			//if round_id is null, means that the query that was ran for rounds can be used again
+			$availableRounds = $rounds;			
+		}
+		else {
+			$availableRounds = Round::where('is_done', True)
+								->orderby('created_at', 'desc')
+								->get();
+		}
+
+		return view('fulfillment_subject', ['round' => $round, 'proms' => $proms, 'highTr' => $trHigh, 'mediumTr' => $trMedium, 'lowTr' => $trLow,
+					'availableRounds'=>$availableRounds]);
 	}
 
     public function sector($round_id = null)
@@ -78,9 +98,14 @@ class Visualization extends Controller
 			$sectorsIds[$sector->name] = $sector->id;
 		}
 		//get requested round, if not requested then get last one
+		$rounds = null;
 		if ($round_id == null){
-			$round = Round::where('is_done', True)
-							->orderby('created_at', 'desc')->first();
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
+			if ($rounds->isEmpty())
+					dd("404 not found");
+			$round = $rounds->get(0);
 		}
 		else{
 			$round = Round::find($round_id);
@@ -125,17 +150,32 @@ class Visualization extends Controller
 		//sort avg array, descending
 		arsort($sectorProm);
 
+		//get available rounds to show on the select box
+		if ($round_id == null){
+			//if round_id is null, means that the query that was ran for rounds can be used again
+			$availableRounds = $rounds;			
+		}
+		else {
+			$availableRounds = Round::where('is_done', True)
+								->orderby('created_at', 'desc')
+								->get();
+		}
 		
 		return view('sector', ['round' => $round, 'sectors' => $sectors, 'sectorProm' => $sectorProm, 'sectorsIds' => $sectorsIds, 
-								'subjectColor' => $subjectColor, 'sectorColor' => $sectorColor]);
+								'subjectColor' => $subjectColor, 'sectorColor' => $sectorColor, 'availableRounds'=>$availableRounds]);
 	}
 
     public function numFulfillment($round_id = null)
     {
 		//get requested round, if not requested then get last one
+		$rounds = null;
 		if ($round_id == null){
-			$round = Round::where('is_done', True)
-							->orderby('created_at', 'desc')->first();
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
+			if ($rounds->isEmpty())
+					dd("404 not found");
+			$round = $rounds->get(0);
 		}
 		else{
 			$round = Round::find($round_id);
@@ -197,14 +237,33 @@ class Visualization extends Controller
 			}
 
 		}
-		return view('fulfillment_numeral', ['round' => $round, 'articles' => $articles, 'numScore' => $numScore, 'numColor' => $numColor, 'artProm' => $artProm, 'artColor' => $artColor]);
+		
+		//get available rounds to show on the select box
+		if ($round_id == null){
+			//if round_id is null, means that the query that was ran for rounds can be used again
+			$availableRounds = $rounds;			
+		}
+		else {
+			$availableRounds = Round::where('is_done', True)
+								->orderby('created_at', 'desc')
+								->get();
+		}
+
+		
+		return view('fulfillment_numeral', ['round' => $round, 'articles' => $articles, 'numScore' => $numScore, 'numColor' => $numColor, 
+		'artProm' => $artProm, 'artColor' => $artColor, 'availableRounds'=>$availableRounds]);
 	}
 	
 	public function numSorted($round_id = null){
 		//get requested round, if not requested then get last one
+		$rounds = null;
 		if ($round_id == null){
-			$round = Round::where('is_done', True)
-							->orderby('created_at', 'desc')->first();
+			$rounds = Round::where('is_done', True)
+							->orderby('created_at', 'desc')
+							->get();
+			if ($rounds->isEmpty())
+					dd("404 not found");
+			$round = $rounds->get(0);
 		}
 		else{
 			$round = Round::find($round_id);
@@ -250,11 +309,24 @@ class Visualization extends Controller
 				$artColor[$key] = 'progress-red';
 			}
 		}
-		return view('numeral_list', ['round'=>$round, 'articles'=>$articles, 'art'=>$art, 'artProm'=>$artProm, 'artColor'=>$artColor, 'numColor'=>$numColor]);
+		
+		//get available rounds to show on the select box
+		if ($round_id == null){
+			//if round_id is null, means that the query that was ran for rounds can be used again
+			$availableRounds = $rounds;			
+		}
+		else {
+			$availableRounds = Round::where('is_done', True)
+								->orderby('created_at', 'desc')
+								->get();
+		}
+		
+		return view('numeral_list', ['round'=>$round, 'articles'=>$articles, 'art'=>$art, 'artProm'=>$artProm, 'artColor'=>$artColor, 
+		'numColor'=>$numColor, 'availableRounds'=>$availableRounds]);
 		
 	}
 	
-	public function subject($subject_id, $round_id=null){
+	public function subject($subject_id, $round_id = null){
 		$subject = Subject::find($subject_id);
 		if(!$subject)
 			dd("404 Not Found");
@@ -279,7 +351,6 @@ class Visualization extends Controller
 		$round = $rounds->get(0);
 		$round_previous = $rounds->get(1);
 		
-
 		$tracks = Track::where('round_id', $round->id)
 				->orderby('score','desc')
 				->get();
@@ -397,10 +468,21 @@ class Visualization extends Controller
 			case 5: $gpClass="five"; break;
 		}
 		
+		//get available rounds to show on the select box
+		if ($round_id == null){
+			//if round_id is null, means that the query that was ran for rounds can be used again
+			$availableRounds = $rounds;			
+		}
+		else {
+			$availableRounds = Round::where('is_done', True)
+								->orderby('created_at', 'desc')
+								->get();
+		}
+		
 		return view('subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
 					'tracksSubject' => $tracksSubject, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds, 'goodPractices'=>$goodPractices,
-					'gpClass'=>$gpClass]);
+					'gpClass'=>$gpClass, 'availableRounds'=>$availableRounds]);
 	}
 	
 	public function subjectPDF($subject_id, $round_id=null){
@@ -557,9 +639,21 @@ class Visualization extends Controller
 		if ($qtyLow>0)
 			$promLow = $sumLow/$qtyLow;
 
+		//get available rounds to show on the select box
+		if ($round_id == null){
+			//if round_id is null, means that the query that was ran for rounds can be used again
+			$availableRounds = $rounds;			
+		}
+		else {
+			$availableRounds = Round::where('is_done', True)
+								->orderby('created_at', 'desc')
+								->get();
+		}
+		
 		return view('numeral', ['numeral'=>$numeral, 'ranking'=>$ranking, 'score'=>$score, 'topSo'=>$topSo, 'midSo' => $midSo, 
 					'lowSo' => $lowSo, 'promTop' => $promTop, 'promMid' => $promMid, 'promLow' => $promLow, 'advancement' => $advancement,
-					'tracksNumeral' => $tracksNumeral, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds]);
+					'tracksNumeral' => $tracksNumeral, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds,
+					'availableRounds'=>$availableRounds]);
 	}
 	
 	public function advancement($round_id = null){

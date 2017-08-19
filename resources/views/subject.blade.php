@@ -172,7 +172,6 @@
         jQuery('[data-toggle="tooltip"]').tooltip({html:true, delay: {show: 100, hide: 1500}, trigger:'hover focus click'});   
     });
 </script>
-
 <div class="main-container">
     <div class="container">
         <h1>{{ $subject->name }}</h1>
@@ -181,6 +180,7 @@
         <div class="compInfo">Telefono: {{ $subject->phone }}</div>
         <div class="compInfo">Correo electr&oacute;nico: {{ $subject->email }}</div>
 		<h2>{{ $rounds[0]->name }}</h2>
+		@include('includes.roundselector')
         <div class="row">
             <div class="col-xs-4">
                 <div id="certificate" class="center-block">
@@ -209,11 +209,11 @@
 						<div class="glyphicon glyphicon-star {{ $gpClass }}"></div>
 					</div>
 					<div class="col-xs-6 col-md-3 col-lg-4">
-						<div @if($goodPractices[0] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[0] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información en formatos editables</h6>
-						<div @if($goodPractices[1] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[1] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información desglosada por género</h6>
-						<div @if($goodPractices[2] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[2] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información en idiomas mayas</h6>
-						<div @if($goodPractices[3] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[3] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información histórica</h6>
-						<div @if($goodPractices[4] == 'Y') class="glyphicon glyphicon-ok" @elseif($goodPractices[4] == 'N') class="glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información fácil de encontrar</h6>	
+						<div @if($goodPractices[0] == 'Y') class="gp-icon glyphicon glyphicon-ok" @elseif($goodPractices[0] == 'N') class="gp-icon glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información en formatos editables</h6>
+						<div @if($goodPractices[1] == 'Y') class="gp-icon glyphicon glyphicon-ok" @elseif($goodPractices[1] == 'N') class="gp-icon glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información desglosada por género</h6>
+						<div @if($goodPractices[2] == 'Y') class="gp-icon glyphicon glyphicon-ok" @elseif($goodPractices[2] == 'N') class="gp-icon glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información en idiomas mayas</h6>
+						<div @if($goodPractices[3] == 'Y') class="gp-icon glyphicon glyphicon-ok" @elseif($goodPractices[3] == 'N') class="gp-icon glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información histórica</h6>
+						<div @if($goodPractices[4] == 'Y') class="gp-icon glyphicon glyphicon-ok" @elseif($goodPractices[4] == 'N') class="gp-icon glyphicon glyphicon-remove" @endif></div><h6 class="gp-element">Información fácil de encontrar</h6>	
 					</div>
 					<div class="hidden-xs col-md-3 col-lg-2"></div>
 				</div>

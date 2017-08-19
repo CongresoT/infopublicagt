@@ -5,6 +5,7 @@
     <div class="container">
         <h1>Cumplimiento general por sector</h1>
         <h2>{{ $round->name }}</h2>
+		@include('includes.roundselector')
         <div class="row">
 			@foreach ($sectorProm as $key => $sector)
 				<div class="panel-group" id="sec{{ $sectorsIds[$key] }}">

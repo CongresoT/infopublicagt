@@ -5,6 +5,7 @@
     <div class="container">
         <h1>Nivel de Cumplimiento por numeral específico</h1>
         <h2>{{ $round->name }}</h2>
+		@include('includes.roundselector')
 		<p>Aquí encontrarás los artículos y sus numerales en el orden que aparecen en la ley.  Presiona el nombre del numeral para ver la información específica.</p>
         <div class="row">
 			@foreach($articles as $article)

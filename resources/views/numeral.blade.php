@@ -175,6 +175,7 @@
         <h1>{{ $numeral->article->name }} - {{ $numeral->name }}</h1>
         <div class="compInfo">{{ $numeral->script }}</div>
 		<h2>{{ $rounds[0]->name }}</h2>
+		@include('includes.roundselector')
         <div class="row">
             <div class="col-xs-4">
                 <div id="certificate" class="center-block">

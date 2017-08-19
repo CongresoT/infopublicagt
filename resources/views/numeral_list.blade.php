@@ -10,6 +10,7 @@
     <div class="container">
         <h1>Vista por numeral específico</h1>
         <h2>{{ $round->name }}</h2>
+		@include('includes.roundselector')
 		<p>Aquí encontrarás los artículos y sus numerales ordenados de mayor a menor en cuanto a su nivel de cumplimiento.  Presiona el nombre del numeral para ver la información específica.</p>
         <div class="row">
 			@foreach($art as $key=>$tNumerals)

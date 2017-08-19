@@ -5,6 +5,7 @@
     <div class="container">
         <h1>Nivel de Cumplimiento General de los Sujetos Obligados</h1>
         <h2>{{ $round->name }}</h2>
+		@include('includes.roundselector')
         <div class="row">
             <div class="panel-group" id="topSo">
                 <div class="panel">
