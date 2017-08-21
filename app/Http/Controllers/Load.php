@@ -73,17 +73,18 @@ class Load extends Controller
 						$questionComm = $reader->sheet->getCellByColumnAndRow(13,$row)->getValue();//N
 						//define which answer it has depending on the values of K and L columns 
 						$questionAns = "NA";
-						if ((strlen($questionYes)>0) && (strlen($questionNo)==0)) {
+						if ((strtoupper(trim($questionYes)) == "X") && (strtoupper(trim($questionNo)) != "X")) {
 							$questionAns = "Y";
 						}
-						elseif ((strlen($questionYes)==0) && (strlen($questionNo)>0)) {
+						elseif ((strtoupper(trim($questionYes)) != "X") && (strtoupper(trim($questionNo)) == "X")) {
 							$questionAns = "N";
 						}
-						elseif ((strlen($questionYes)==0) && (strlen($questionNo)==0)) {
+						elseif ((strtoupper(trim($questionYes)) != "X") && (strtoupper(trim($questionNo)) != "X")) {
 							$questionAns = "NA";
 						}
-						elseif ((strlen($questionYes)>0) && (strlen($questionNo)>0)) {
+						elseif ((strtoupper(trim($questionYes)) == "X") && (strtoupper(trim($questionNo)) == "X")) {
 							$questionAns = "ERROR";
+							dd("row# ".$row.": error, invalid value");
 						}
 						//create the row in questions table
 						$indicator = Indicator::find($questionNum);
@@ -99,7 +100,7 @@ class Load extends Controller
 						$question->answer = $questionAns;
 						$question->specialist_comments = $questionComm;
 						$question->save();
-						echo "<br/>Saved questionId ".$questionNum;
+						echo "<br/>Saved questionId ".$questionNum." ".$questionAns;
 						$questionNum++;
 					}
 				}
