@@ -26,10 +26,68 @@ class Load extends Controller
         $directory = storage_path('app/public');
         $files = File::allFiles($directory);
         $htmlResult = '';
+		
+		
 		//manually specify the round that is being worked on
 		$round_id = 2;
 		$round = Round::find($round_id);
+		
+		
+		//$questionMap will save the map between file row and indicatorId
+		$questionMap = [];
+		//first questions
+		$qNum = 1;
+		for ($rowNum = 2;$rowNum <= 76;$rowNum++){
+			//row 2 has question 1, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}
+		//recently added questions, for num14
+		$qNum = 409;
+		for ($rowNum = 77;$rowNum <= 81;$rowNum++){
+			//row 77 has question 409, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}
+		//recently added questions, for num15
+		$qNum = 414;
+		for ($rowNum = 97;$rowNum <= 111;$rowNum++){
+			//row 77 has question 409, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}
+		//continue with the older questions
+		$qNum = 101;
+		for ($rowNum = 112;$rowNum <= 173;$rowNum++){
+			//row 112 has question 101, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}
+		//article 11 to 14
+		$qNum = 163;
+		for ($rowNum = 175;$rowNum <= 215;$rowNum++){
+			//row 175 has question 163, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}
+		//art 10, num 24 and 25
+		$qNum = 204;
+		for ($rowNum = 217;$rowNum <= 416;$rowNum++){
+			//row 217 has question 204, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}
+		//good practices
+		$qNum = 404;
+		for ($rowNum = 426;$rowNum <= 430;$rowNum++){
+			//row 426 has question 404, and etc
+			$questionMap[$rowNum] = $qNum;
+			$qNum++;
+		}		
+		
 		//retrieve all files in $directory
+		//this script will only handle the latest format of the questions (the defined for the second row), 
+		//if you need to load 1st round files ..convert them or use git to get the previous file
         foreach ($files as $file)
         {
 			//get the subject id from the filename
@@ -45,27 +103,13 @@ class Load extends Controller
 			$track = Track::where('subject_id', '=', $subject_id)
 							->where('round_id', '=', $round_id)
 							->first();
+
 			//get only the needed worksheet
-            $data = Excel::selectSheets('preguntas')->load($file)->byConfig('excel::import.sheets',function($reader) use(&$track){
-				//row 2 to 420, (answers are on these rows)
-				$questionNum = 1;
-				//if cell F210 has "10" on it, the file uses the old format, if not, it uses the new format
-				$f210 = $reader->sheet->getCell("F210")->getValue();
-				//get the lines that need to be retrieved according to the format
-				for ($row=2;$row<=420;$row++){
-					if (
-							( //blank rows and, blank rows on the new format 
-								(($row != 164)&&($row != 206)&&($row != 413)&&($row != 414)&&($row != 415))
-								&&(($f210!="10")&&!(($row>=407)&&($row<=412)))
-							)
-							||
-							( //blank rows and, discarded rows on the old format
-								(($row != 164)&&($row != 206)&&($row != 413)&&($row != 414)&&($row != 415))
-								&&(($f210=="10")&&!(($row>=207)&&($row<=209)))
-								&&(($f210=="10")&&!(($row>=310)&&($row<=312)))
-							)
-							
-						) {
+            $data = Excel::selectSheets('preguntas')->load($file)->byConfig('excel::import.sheets',function($reader) use(&$track, $questionMap){
+				//row 2 to 430, (answers are on these rows)				
+				for ($row=2;$row<=430;$row++){
+					//if the row has data that needs to be saved
+					if (isset($questionMap[$row])) {
 						//get the data for each question
 						$questionYes = $reader->sheet->getCellByColumnAndRow(10,$row)->getValue();//K
 						$questionNo = $reader->sheet->getCellByColumnAndRow(11,$row)->getValue();//L
@@ -87,21 +131,20 @@ class Load extends Controller
 							dd("row# ".$row.": error, invalid value");
 						}
 						//create the row in questions table
-						$indicator = Indicator::find($questionNum);
+						$indicator = Indicator::find($questionMap[$row]);
 						if (!$indicator->tracks->contains($track)){
 							$indicator->tracks()->save($track);
 						}
 						//save the answer in the question model
 						$question = Question::where('track_id', '=', $track->id)
-										->where('indicator_id', '=', $questionNum)
+										->where('indicator_id', '=', $questionMap[$row])
 										->first();
 						$question->links = $questionLink;
 						$question->q_type = $indicator->q_type;
 						$question->answer = $questionAns;
 						$question->specialist_comments = $questionComm;
 						$question->save();
-						echo "<br/>Saved questionId ".$questionNum." ".$questionAns;
-						$questionNum++;
+						echo "<br/>Saved questionId ".$questionMap[$row]." ".$questionAns." (on row ".$row.")";
 					}
 				}
             });
