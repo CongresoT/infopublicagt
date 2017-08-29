@@ -14,6 +14,7 @@ use App\Subject;
 use App\RoundTrackNumeral;
 use App\Indicator;
 use Illuminate\Support\Facades\Route;
+use Mail;
 
 class Visualization extends Controller
 {
@@ -487,6 +488,7 @@ class Visualization extends Controller
 	
 	public function subjectPDF($subject_id, $round_id=null){
 		set_time_limit(0);
+		ini_set("memory_limit","256M");
 		$subject = Subject::find($subject_id);
 		if(!$subject)
 			dd("404 Not Found");
@@ -521,11 +523,19 @@ class Visualization extends Controller
 									->get();
 		
 		$indicators = Indicator::all();
-		
-		//return view('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$this->higher, 'medium'=>$this->medium]);
-		
+
 		$pdf = \PDF::loadView('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$this->higher, 'medium'=>$this->medium]);
-		return $pdf->stream($subject->name.' - '.$round->name.'.pdf');
+		
+		//send mail 
+		$mailData['title'] = "body Test title";
+		Mail::send('emails.email', $mailData, function($message) use($pdf, $subject, $round){
+			$message->to($subject->email, $subject->uaip_person)
+					->subject($subject->name.' - '.$round->name)
+					->from(env('MAIL_USERNAME'),env('MAIL_SENDERNAME'))
+					->attachData($pdf->output(), $subject->name.' - '.$round->name.'.pdf');
+		});
+		dd("mail sent");
+		//return $pdf->stream($subject->name.' - '.$round->name.'.pdf');
 
 	}
 

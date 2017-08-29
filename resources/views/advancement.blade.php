@@ -28,7 +28,7 @@
 										</div>
 									</div>
 									<div class="arrow-up col-xs-1"></div>
-									<div class="progress-qty-green col-xs-1">{{ $subject->advancement }}%</div>
+									<div class="progress-qty-green col-xs-1">{{ number_format($subject->advancement,2) }}%</div>
 								@endforeach
                             </div>
                         </div>
@@ -57,7 +57,7 @@
 										</div>
 									</div>
 									<div class="progress-qty-yellow col-xs-1">=</div>
-									<div class="progress-qty-yellow col-xs-1">{{ $subject->advancement }}%</div>
+									<div class="progress-qty-yellow col-xs-1">{{ number_format($subject->advancement,2) }}%</div>
 								@endforeach
                             </div>
                         </div>
@@ -86,7 +86,7 @@
 										</div>
 									</div>
 									<div class="arrow-down col-xs-1"></div>
-									<div class="progress-qty-red col-xs-1">{{ $subject->advancement }}%</div>
+									<div class="progress-qty-red col-xs-1">{{ number_format($subject->advancement,2) }}%</div>
 								@endforeach
                             </div>
                         </div>

@@ -1,6 +1,6 @@
 body {
     overflow-x: hidden;
-	font-family:Lato,"Helvetica Neue",Helvetica,Arial,sans-serif;
+	font-family:Helvetica,Arial,sans-serif;
 }
 
 p {
@@ -27,7 +27,7 @@ h4,
 h5,
 h6 {
     text-transform: uppercase;
-    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: Helvetica,Arial,sans-serif;
     font-weight: 700;
 }
 
@@ -97,7 +97,7 @@ header img, .main-container .item img {
 .main-info .intro-text .name {
     display: block;
     text-transform: uppercase;
-    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: Helvetica,Arial,sans-serif;
     font-size: 2em;
     font-weight: 700;
 }
@@ -176,7 +176,7 @@ header .item:hover, header .item a:hover, header .item img:hover + header .item 
 
 .navbar {
     text-transform: uppercase;
-    font-family: Montserrat,"Helvetica Neue",Helvetica,Arial,sans-serif;
+    font-family: Helvetica,Arial,sans-serif;
     font-weight: 700;
 }
 
@@ -715,7 +715,7 @@ tr.progress-qty-green, tr.progress-qty-yellow, tr.progress-qty-red {
 
 
 /*end of visualizaciones*/
-
+	
 /* backend */
 
 .current-num {
