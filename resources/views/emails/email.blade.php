@@ -1,3 +1,1 @@
-﻿<h1>{{ $title }}</h1>
-
-<p>Thank you</p>
+﻿<p>Reciba un saludo de parte de Guatecambia, y vea el archivo adjunto.  Mas detalles en http://www.infopublicagt.org/sujeto/{{ $subject_id }} </p>

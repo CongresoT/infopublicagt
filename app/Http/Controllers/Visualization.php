@@ -14,6 +14,7 @@ use App\Subject;
 use App\RoundTrackNumeral;
 use App\Indicator;
 use Illuminate\Support\Facades\Route;
+use App\Jobs\SendReportEmail;
 use Mail;
 
 class Visualization extends Controller
@@ -486,7 +487,7 @@ class Visualization extends Controller
 					'gpClass'=>$gpClass, 'availableRounds'=>$availableRounds]);
 	}
 	
-	public function subjectPDF($subject_id, $round_id=null){
+	public function subjectPDF($subject_id, $round_id=null, $defdelay=0){
 		set_time_limit(0);
 		ini_set("memory_limit","256M");
 		$subject = Subject::find($subject_id);
@@ -524,19 +525,25 @@ class Visualization extends Controller
 		
 		$indicators = Indicator::all();
 
-		$pdf = \PDF::loadView('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$this->higher, 'medium'=>$this->medium]);
-		
 		//send mail 
-		$mailData['title'] = "body Test title";
-		Mail::send('emails.email', $mailData, function($message) use($pdf, $subject, $round){
-			$message->to($subject->email, $subject->uaip_person)
-					->subject($subject->name.' - '.$round->name)
-					->from(env('MAIL_USERNAME'),env('MAIL_SENDERNAME'))
-					->attachData($pdf->output(), $subject->name.' - '.$round->name.'.pdf');
-		});
-		dd("mail sent");
-		//return $pdf->stream($subject->name.' - '.$round->name.'.pdf');
+		$this->dispatch((new SendReportEmail($subject, $ranking, $score, $rtns, $this->higher, $this->medium, $round))->delay($defdelay));
+		echo(" mail sent to queue <br/>");
 
+	}
+	
+	public function sendPDFs($round_id=null){
+		set_time_limit(0);
+		ini_set("memory_limit","256M");
+		$subjects = Subject::where('enabled',True)
+					->orderby('id','asc')
+					->get();
+		foreach($subjects as $subject){
+			if ($subject->email != '') {
+				echo (" generating pdf for ".$subject->id.". Delay: ".$subject->id);
+				$this->subjectPDF($subject->id, $round_id, $subject->id);
+			}
+		}
+		
 	}
 
 	public function numeral($numeral_id, $round_id=null){
