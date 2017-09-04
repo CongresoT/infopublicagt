@@ -486,6 +486,49 @@ class Visualization extends Controller
 					'tracksSubject' => $tracksSubject, 'higher'=>$this->higher, 'medium'=>$this->medium, 'rounds'=>$rounds, 'goodPractices'=>$goodPractices,
 					'gpClass'=>$gpClass, 'availableRounds'=>$availableRounds]);
 	}
+
+	public function subjectViewPDF($subject_id, $round_id=null, $defdelay=0){
+		set_time_limit(0);
+		ini_set("memory_limit","256M");
+		$subject = Subject::find($subject_id);
+		if(!$subject)
+			dd("404 Not Found");
+		if ($round_id == null){
+			$round = Round::where('is_done', True)
+							->orderby('created_at', 'desc')->first();
+		}
+		else{
+			$round = Round::find($round_id);
+			if (!$round)
+				dd("404 Not Found");
+		}
+		$tracks = Track::where('round_id', $round->id)
+				->orderby('score','desc')
+				->get();
+		$ranking = 0;
+		$score = 0;
+		foreach($tracks as $track){
+			$ranking += 1;
+			if($track->subject_id == $subject->id){
+				$score = $track->score;
+				break;
+			}
+		}
+		$track = Track::where('round_id', $round->id)
+						->where('subject_id', $subject->id)
+						->first();
+		if (!$track)
+			dd("404 not Found");
+		$rtns = RoundTrackNumeral::where('track_id',$track->id)
+									->orderby('score','desc')
+									->get();
+		
+		$indicators = Indicator::all();
+
+		$pdf = \PDF::loadView('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$this->higher, 'medium'=>$this->medium]);
+		return $pdf->stream($subject->name.' - '.$round->name.'.pdf');
+
+	}
 	
 	public function subjectPDF($subject_id, $round_id=null, $defdelay=0){
 		set_time_limit(0);
