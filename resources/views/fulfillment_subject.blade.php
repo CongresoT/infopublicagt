@@ -1,84 +1,74 @@
 ﻿@extends('layouts.laip')
 
 @section('content')
+<link rel="stylesheet" href="{{ URL::asset('css/sequences.css') }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
+<script type="text/javascript">
+json = {
+            name:"root",
+            children: [
+                {
+                    name:"de 85% en adelante",
+                    color:"#32CD32",
+                    score:"{{ sizeof($highTr) }}",
+                    children: [
+                        @foreach ($highTr as $h)
+                            {
+                                name:"{{ $h->subject->name }}",
+                                id:"{{ $h->subject->id }}",
+                                size:10, 
+                                score: {{ $h->score }},
+                            },
+                        @endforeach
+                    ]
+                },
+                {
+                    name:"entre 60% y 85%",
+                    color:"#FF8C00",
+                    score:"{{ sizeof($mediumTr) }}",
+                    children: [
+                        @foreach ($mediumTr as $m)
+                            {
+                                name:"{{ $m->subject->name }}",
+                                id:"{{ $m->subject->id }}",
+                                size:10, 
+                                score: {{ $m->score }},
+                            },
+                        @endforeach
+                    ]
+                },
+                {
+                    name:"menos de 60%",
+                    color:"#B22222",
+                    score:"{{ sizeof($lowTr) }}",
+                    children: [
+                        @foreach ($lowTr as $l)
+                            {
+                                name:"{{ $l->subject->name }}",
+                                id:"{{ $l->subject->id }}",
+                                size:10, 
+                                score: {{ $l->score }},
+                            },
+                        @endforeach
+                    ]
+                },
+            ]
+}
+</script>
 <div class="main-container">
     <div class="container">
         <h1>Nivel de Cumplimiento General de los Sujetos Obligados</h1>
         <h2>{{ $round->name }}</h2>
 		@include('includes.roundselector')
-        <div class="row">
-            <div class="panel-group" id="topSo">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h4><a data-toggle="collapse" data-parent="#topSo" href="#topSoDetail"><span class="glyphicon glyphicon-plus"></span>Sujetos Obligados con cumplimiento de 85% en adelante ({{ sizeof($highTr) }})</a></h4>
-                        <div class="progress-border">
-                            <div class="progress-green progress-bar" style="height:24px;width:{{ $proms[0] }}%">{{ number_format($proms[0],2) }}%</div>
-                        </div>
-                    </div>
-                    <div id="topSoDetail" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-								@foreach ($highTr as $h)
-									<div class="subject col-xs-12">
-										<h5><a href="{{ url('/sujeto', $h->subject->id) }}">{{ $h->subject->name }}</a></h5>
-										<div class="progress-border">
-											<div class="progress-green progress-bar" style="height:24px;width:{{ $h->score }}%">{{ $h->score }}%</div>
-										</div>
-									</div>
-								@endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
+        <div class="row">   
+            <br/><p>Pasa sobre la gráfica para conocer el cumplimiento de los sujetos obligados monitoreados</p><br/>
+          <div id="chart">
+            <div id="explanation" style="visibility: hidden;">
+              <span id="percentage"></span><br/>
+              <span id="sname"></span>
             </div>
-            <div class="panel-group" id="middleSo">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h4><a data-toggle="collapse" data-parent="#middleSo" href="#middleSoDetail"><span class="glyphicon glyphicon-plus"></span>Sujetos Obligados con cumplimiento entre 60% y 84.9% ({{ sizeof($mediumTr) }})</a></h4>
-                        <div class="progress-border">
-                            <div class="progress-yellow progress-bar" style="height:24px;width:{{ $proms[1] }}%">{{ number_format($proms[1],2) }}%</div>
-                        </div>
-                    </div>
-                    <div id="middleSoDetail" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-								@foreach ($mediumTr as $m)
-									<div class="subject col-xs-12">
-										<h5><a href="{{ url('/sujeto', $m->subject->id) }}">{{ $m->subject->name }}</a></h5>
-										<div class="progress-border">
-											<div class="progress-yellow progress-bar" style="height:24px;width:{{ $m->score }}%">{{ $m->score }}%</div>
-										</div>
-									</div>
-								@endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="panel-group" id="lowerSo">
-                <div class="panel">
-                    <div class="panel-heading">
-                        <h4><a data-toggle="collapse" data-parent="#lowerSo" href="#lowerSoDetail"><span class="glyphicon glyphicon-plus"></span>Sujetos Obligados con cumplimiento menor a 60% ({{ sizeof($lowTr) }})</a></h4>
-                        <div class="progress-border">
-                            <div class="progress-red progress-bar" style="height:24px;width:{{ $proms[2] }}%">{{ number_format($proms[2],2) }}%</div>
-                        </div>
-                    </div>
-                    <div id="lowerSoDetail" class="panel-collapse collapse">
-                        <div class="panel-body">
-                            <div class="row">
-								@foreach ($lowTr as $l)
-									<div class="subject col-xs-12">
-										<h5><a href="{{ url('/sujeto', $l->subject->id) }}">{{ $l->subject->name }}</a></h5>
-										<div class="progress-border">
-											<div class="progress-red progress-bar" style="height:24px;width:{{ $l->score }}%">{{ $l->score }}%</div>
-										</div>
-									</div>
-								@endforeach
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
+          </div>
         </div>
     </div>
+    @include('includes.sunburst')
 </div>@endsection

@@ -3,7 +3,6 @@
 @section('content')
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.9.1/d3.min.js"></script>
 <script>
-
 	
     var data = [
 		@foreach($tracksSubject as $ts)
@@ -29,9 +28,25 @@
 	d3.formatDefaultLocale(localeDefinition);
 	
     // Set the dimensions of the canvas / graph
-    var margin = {top: 30, right: 20, bottom: 30, left: 50},
-        width = 600 - margin.left - margin.right,
-        height = 270 - margin.top - margin.bottom;
+    var margin = {top: 30, right: 20, bottom: 30, left: 50};
+    var width = 10;
+    winWidth = Math.max(
+        document.body.scrollWidth,
+        document.documentElement.scrollWidth,
+        document.body.offsetWidth,
+        document.documentElement.offsetWidth,
+        document.documentElement.clientWidth
+    );
+    if (winWidth <= 600) {
+        width = winWidth-50;
+        height = width * 0.75;
+    }
+    else {
+        width = 600;
+        height = 270;
+    }
+    width = width - margin.left - margin.right,
+    height = height - margin.top - margin.bottom;
 
     // Set the ranges
     var x = d3.scaleTime().range([0, width]);
