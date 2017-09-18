@@ -13,11 +13,13 @@ use App\Question;
 use App\Numeral;
 use App\NumeralTrack;
 use App\RoundTrackNumeral;
+use Illuminate\Support\Facades\DB;
 
 class Load extends Controller
 {
 
 	private $active = True;
+    private $roundId = 2;
     public function excel()
     {
 		if (!$this->active)
@@ -158,7 +160,7 @@ class Load extends Controller
 		/*if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = 1;
+		$roundId = $this->roundId;
 		$subjects = Subject::where('enabled', true)
 							->get();
 		foreach ($subjects as  $subject){
@@ -188,7 +190,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = 2;
+		$roundId = $this->roundId;
 		$numerals = Numeral::all();
 		foreach ($numerals as $numeral) {
 			$countY = 0;
@@ -232,7 +234,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = 2;		
+		$roundId = $this->roundId;		
 		$yQuestions = [];
 		$nQuestions = [];
 		$qtyNumerals = 0;
@@ -290,5 +292,61 @@ class Load extends Controller
 		}
 		dd("done");
 	}
-	
+
+	public function createCsv() {
+		if (!$this->active)
+			dd("Deactivated option");
+		$roundId = $this->roundId;
+        $roundInfo = DB::table('questions as q')
+                        ->join('indicators as i', function($join) {
+                            $join->on('q.indicator_id','=','i.id');
+                        })
+                        ->join('numerals as n', function($join) {
+                            $join->on('i.numeral_id','=','n.id');
+                        })
+                        ->join('articles as a', function($join) {
+                            $join->on('n.article_id','=','a.id');
+                        })
+                        ->join('tracks as t', function($join) {
+                            $join->on('q.track_id','=','t.id');
+                        })
+                        ->join('rounds as r', function($join) {
+                            $join->on('t.round_id','=','r.id');
+                        })
+                        ->join('subjects as s', function($join) {
+                            $join->on('t.subject_id','=','s.id');
+                        })
+                        ->join('sectors as sec', function($join) {
+                            $join->on('s.sector_id','=','sec.id');
+                        })
+                        ->where('r.id',2)
+                        ->where([
+                            ['q.answer','!=','NA'],
+                            ['q.answer','!=',Null]
+                        ])
+                        ->orderby('s.name','asc')
+                        ->select('s.name as subject', 'sec.name as sector', 'r.name as round', 'a.name as article', 'n.name as numeral', 'i.question as question', 'q.q_type as q_type', 'q.answer as answer')
+                        ->get();
+        $roundInfo = collect($roundInfo)->map(function($x){ return(array) $x; })->toArray();
+        //dd($roundInfo);
+        \Excel::create('infopublicagt_monitoreo_'.$this->roundId, function($excel) use($roundInfo) {
+            $excel->sheet('monitoreo'.$this->roundId, function($sheet) use ($roundInfo) {
+                $sheet->fromArray($roundInfo);
+            });
+        })->store('csv', storage_path('monitoreos'));
+        dd('file saved');
+	}
+    
+	public function createSoCsv() {
+		if (!$this->active)
+			dd("Deactivated option");
+        $subjectsInfo = Subject::select('id','name as nombre', 'url', 'uaip_person', 'phone as telefono', 'email')
+                            ->get()->toArray();
+        \Excel::create('so', function($excel) use($subjectsInfo) {
+            $excel->sheet('so', function($sheet) use ($subjectsInfo) {
+                $sheet->fromArray($subjectsInfo);
+            });
+        })->store('csv', storage_path('monitoreos'));
+        dd('file saved');
+	}
 }

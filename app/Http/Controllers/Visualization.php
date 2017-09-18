@@ -16,6 +16,8 @@ use App\Indicator;
 use Illuminate\Support\Facades\Route;
 use App\Jobs\SendReportEmail;
 use Mail;
+use Illuminate\Support\Facades\Storage;
+
 
 class Visualization extends Controller
 {
@@ -780,4 +782,26 @@ class Visualization extends Controller
 		
 		return view('advancement', ['round'=>$round, 'round_previous'=>$round_previous, 'subjectsUp'=>$subjectsUp, 'subjectsEqual'=>$subjectsEqual, 'subjectsDown'=>$subjectsDown, 'upPerc'=>$upPerc, 'equalPerc'=>$equalPerc, 'downPerc'=>$downPerc]);
 	}
+    
+    public function downloads() {
+        $rounds = Round::where('is_done', True)
+                        ->orderby('created_at', 'desc')
+                        ->get();
+        return view('downloads', ['rounds'=>$rounds]);   
+    }
+    
+    public function downloadFile($round_id){
+        $round = Round::find($round_id);
+        if (!$round)
+            dd("404 Not Found - File does not exists");
+        $fileName = 'infopublicagt_monitoreo_'.$round_id.'.csv';
+        $filePath = storage_path('monitoreos/'.$fileName);
+        return response()->download($filePath);
+    }
+    
+    public function downloadSoFile(){
+        $filePath = storage_path('monitoreos/so.csv');
+        return response()->download($filePath);
+    }
+    
 }

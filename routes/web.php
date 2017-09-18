@@ -50,7 +50,9 @@ Route::get('/numeral/{numeral_id}', 'Visualization@numeral');
 Route::get('/lista_numeral/{round_id?}', 'Visualization@numSorted');
 Route::get('/avance', 'Visualization@advancement');
 Route::get('/generate_pdfs', 'Visualization@sendPDFs');
-
+Route::get('/descargas','Visualization@downloads');
+Route::get('/descargas/so','Visualization@downloadSoFile');
+Route::get('/descargas/{round_id?}','Visualization@downloadFile');
 
 
 /*load scripts*/
@@ -58,6 +60,8 @@ Route::get('load', 'Load@excel');
 Route::get('calc1', 'Load@calcFulfillment');
 Route::get('calc2', 'Load@calcArtFulfillment');
 Route::get('calc3', 'Load@calcSubjectArticle');
+Route::get('calc4', 'Load@createCsv');
+Route::get('calc5', 'Load@createSoCsv');
 
 
 
