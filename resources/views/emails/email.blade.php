@@ -1,4 +1,12 @@
-﻿<b>Señores</b><br/>
+﻿<div style="margin:0 auto; width:230px;">
+    <a href="http://accionciudadana.org.gt/" target="_blank">
+        <img alt="Accion Ciudadana" href="http://accionciudadana.org.gt/" src="{{  $message->embed(public_path() . '/img/ac_p.png') }}">
+    </a>
+    <a href="http://www.guatecambia.org.gt" target="_blank">
+        <img alt="Guatecambia" src="{{ $message->embed(public_path() . '/img/guatecambia_p.png') }}">
+    </a>
+</div>
+<b>Señores</b><br/>
 <b>Unidad Acceso a la Información Pública</b><br/>
 <b>Presentes.</b><br/>
 <br/><br/>
