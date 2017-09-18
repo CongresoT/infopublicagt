@@ -319,7 +319,7 @@ class Load extends Controller
                         ->join('sectors as sec', function($join) {
                             $join->on('s.sector_id','=','sec.id');
                         })
-                        ->where('r.id',2)
+                        ->where('r.id',$roundId)
                         ->where([
                             ['q.answer','!=','NA'],
                             ['q.answer','!=',Null]

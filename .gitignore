@@ -4,6 +4,7 @@
 /storage/*.key
 /storage/fonts
 /storate/monitoreos/*
+/storate/monitoreos
 /vendor
 /.idea
 /.vagrant
