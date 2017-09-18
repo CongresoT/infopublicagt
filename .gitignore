@@ -3,8 +3,8 @@
 /public/storage
 /storage/*.key
 /storage/fonts
-/storate/monitoreos/*
-/storate/monitoreos
+/storage/monitoreos/*
+/storage/monitoreos
 /vendor
 /.idea
 /.vagrant
