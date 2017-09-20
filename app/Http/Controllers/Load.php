@@ -19,7 +19,7 @@ class Load extends Controller
 {
 
 	private $active = True;
-    private $roundId = 2;
+    private $roundId = 3;
     public function excel()
     {
 		if (!$this->active)
@@ -31,7 +31,7 @@ class Load extends Controller
 		
 		
 		//manually specify the round that is being worked on
-		$round_id = 2;
+		$round_id = $this->roundId;
 		$round = Round::find($round_id);
 		
 		

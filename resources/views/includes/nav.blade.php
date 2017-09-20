@@ -43,6 +43,9 @@
                         </ul>
                     </li>
                     <li>
+                        <a href="{{ url('/descargas') }}">Descargas</a>
+                    </li>
+                    <li>
                         <a href="{{ url('/metodologia') }}">Metodología</a>
                     </li>
                     <li>
