@@ -57,7 +57,7 @@ class SendReportEmail implements ShouldQueue
 		$mailData['round_name'] = $round->name;
 		$pdf = \PDF::loadView('pdf.subject', ['subject'=>$subject, 'ranking'=>$ranking, 'score'=>$score, 'track'=>$rtns, 'higher'=>$higher, 'medium'=>$medium]);
 		$mailer->send('emails.email', $mailData, function($msg) use($pdf, $subject, $round) { 
-			$msg->to(explode(",",$subject->email), $subject->uaip_person)
+			$msg->to(array_map('trim',explode(",",$subject->email)), $subject->uaip_person)
 					->subject('Resultados para '.$subject->name.' - '.$round->name.'.pdf')
 					->from(env('MAIL_USERNAME'),env('MAIL_SENDERNAME'))
 					->attachData($pdf->output(), $subject->name.' - '.$round->name.'.pdf');
