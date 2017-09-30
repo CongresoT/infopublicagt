@@ -29,4 +29,9 @@ class Track extends Model
 	public function questions(){
 		return $this->hasMany('App\Question');
 	}
+	
+	//for voyager
+	public function subjectId(){
+		return $this->subject();
+	}
 }

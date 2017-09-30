@@ -13,5 +13,8 @@ class Question extends Model
         return $this->belongsTo('App\Indicator');
     }
 
+	public function indicatorId(){
+		return $this->indicator();
+	}
 	
 }

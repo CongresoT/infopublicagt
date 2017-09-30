@@ -64,7 +64,14 @@ Route::get('calc4', 'Load@createCsv');
 Route::get('calc5', 'Load@createSoCsv');
 
 
-
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/*admin views*/
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+	Route::get('trackquestions/{track_id?}','QuestionsAdmin@index');
+	Route::get('addtracks/{round_id?}','AdminTools@createTracks');
+    
+});

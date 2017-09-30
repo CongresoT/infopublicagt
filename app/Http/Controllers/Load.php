@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
 use Excel;
 use File;
 use App\Track;
@@ -14,6 +13,7 @@ use App\Numeral;
 use App\NumeralTrack;
 use App\RoundTrackNumeral;
 use Illuminate\Support\Facades\DB;
+use Request;
 
 class Load extends Controller
 {
@@ -190,7 +190,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = $this->roundId;
+        $roundId = Request::input('roundId');
 		$numerals = Numeral::all();
 		foreach ($numerals as $numeral) {
 			$countY = 0;
@@ -226,7 +226,12 @@ class Load extends Controller
 			if ($countY+$countN>0) 
 				$numeralTrack->score = ($countY / ($countY+$countN))*100;
 			$numeralTrack->save();
-			echo ("</br>".$numeralTrack->numeral_id." = ".$numeralTrack->score);
+
+            return redirect(url("/admin/rounds/".$roundId."/edit"))
+            ->with([
+                'message'    => "Calculo de cumplimiento de artículos para la ronda finalizado",
+                'alert-type' => 'success',
+                ]);
 		}
 	}
 
@@ -234,7 +239,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		set_time_limit(0);
-		$roundId = $this->roundId;		
+		$roundId = Request::input('roundId');
 		$yQuestions = [];
 		$nQuestions = [];
 		$qtyNumerals = 0;
@@ -290,7 +295,11 @@ class Load extends Controller
 			echo ("</br>".$track->subject_id." = ".$sumNumerals."/".$qtyNumerals);
 			$track->save();
 		}
-		dd("done");
+        return redirect(url("/admin/rounds/".$roundId."/edit"))
+        ->with([
+            'message'    => "Calculo de cumplimiento de artículos por sujeto obligado para la ronda finalizado",
+            'alert-type' => 'success',
+            ]);
 	}
 
 	public function createCsv() {
