@@ -25,5 +25,10 @@ class Numeral extends Model
     public function tracks(){
 		return $this->belongsToMany('App\Track', 'round_track_numerals');
     }
-
+	
+	//as function article() but to be used in voyager views
+	public function articleId(){
+		return $this->belongsTo('App\Article');
+	}
+	
 }

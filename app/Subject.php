@@ -18,5 +18,9 @@ class Subject extends Model
 		return $this->belongsToMany('App\Round', 'tracks')
 			->withTimestamps();
     }
-
+	
+	//sector() for voyager
+	public function sectorId(){
+		return $this->sector();
+	}
 }

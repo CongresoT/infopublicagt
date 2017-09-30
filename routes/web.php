@@ -54,12 +54,20 @@ Route::get('/generate_pdfs', 'Visualization@sendPDFs');
 
 /*load scripts*/
 Route::get('load', 'Load@excel');
-Route::get('calc1', 'Load@calcFulfillment');
-Route::get('calc2', 'Load@calcArtFulfillment');
-Route::get('calc3', 'Load@calcSubjectArticle');
+Route::post('calc1', 'Load@calcFulfillment');
+Route::post('calc2', 'Load@calcArtFulfillment');
+Route::post('calc3', 'Load@calcSubjectArticle');
 
 
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+/*admin views*/
+Route::group(['prefix' => 'admin'], function () {
+    Voyager::routes();
+	Route::get('trackquestions/{track_id?}','QuestionsAdmin@index');
+	Route::get('addtracks/{round_id?}','AdminTools@createTracks');
+    
+});
