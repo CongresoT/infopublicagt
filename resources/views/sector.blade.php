@@ -11,7 +11,7 @@
 				<div class="panel-group" id="sec{{ $sectorsIds[$key] }}">
 					<div class="panel">
 						<div class="panel-heading">
-							<h4><a data-toggle="collapse" data-parent="#sec{{ $sectorsIds[$key] }}" href="#sec{{ $sectorsIds[$key] }}Detail"><span class="glyphicon glyphicon-plus"></span>{{ $key }}</a></h4>
+							<h4><a data-toggle="collapse" data-parent="#sec{{ $sectorsIds[$key] }}" href="#sec{{ $sectorsIds[$key] }}Detail"><span class="glyphicon glyphicon-chevron-right"></span>{{ $key }}</a></h4>
 							<div class="progress-border">
 								<div class="{{ $sectorColor[$key] }} progress-bar" style="height:24px;width:{{ $sectorProm[$key] }}%">{{ number_format($sectorProm[$key],2) }}%</div>
 							</div>

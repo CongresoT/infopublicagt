@@ -12,7 +12,7 @@
 				<div class="panel-group" id="art{{ $article->id }}">
 					<div class="panel">
 						<div class="panel-heading">
-							<h4><a data-toggle="collapse" data-parent="#art{{ $article->id }}" href="#art{{ $article->id }}Detail"><span class="glyphicon glyphicon-plus"></span>{{ $article->name }}</a></h4>
+							<h4><a data-toggle="collapse" data-parent="#art{{ $article->id }}" href="#art{{ $article->id }}Detail"><span class="glyphicon glyphicon-chevron-right"></span>{{ $article->name }}</a></h4>
 							<div class="progress-border">
 								<div class="{{ $artColor[$article->id] }} progress-bar" style="height:24px;width:{{ $artProm[$article->id] }}%">{{ number_format($artProm[$article->id],2) }}%</div>
 							</div>

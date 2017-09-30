@@ -17,7 +17,7 @@
 				<div class="panel-group" id="art{{ str_replace(['.',' ','á','é','í','ó','ú'],[],$key) }}">
 					<div class="panel">
 						<div class="panel-heading">
-							<h4><a data-toggle="collapse" data-parent="#art{{ str_replace(['.',' ','á','é','í','ó','ú'],[],$key) }}" href="#art{{ str_replace(['.',' ','á','é','í','ó','ú'],[],$key) }}Detail"><span class="glyphicon glyphicon-plus"></span>{{ $key }}</a></h4>
+							<h4><a data-toggle="collapse" data-parent="#art{{ str_replace(['.',' ','á','é','í','ó','ú'],[],$key) }}" href="#art{{ str_replace(['.',' ','á','é','í','ó','ú'],[],$key) }}Detail"><span class="glyphicon glyphicon-chevron-right"></span>{{ $key }}</a></h4>
 							<div class="progress-border">
 								<div class="{{ $artColor[$key] }} progress-bar" style="height:24px;width:{{ $artProm[$key] }}%">{{ number_format($artProm[$key],2) }}%</div>
 							</div>

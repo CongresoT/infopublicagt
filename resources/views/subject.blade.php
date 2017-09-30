@@ -242,7 +242,7 @@
             <div class="panel-group" id="topSo">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h4><a data-toggle="collapse" data-parent="#topSo" href="#topSoDetail"><span class="glyphicon glyphicon-plus"></span>Numerales con cumplimiento de 85% en adelante ({{ sizeof($topSo) }})</a></h4>
+                        <h4><a data-toggle="collapse" data-parent="#topSo" href="#topSoDetail"><span class="glyphicon glyphicon-chevron-right"></span>Numerales con cumplimiento de 85% en adelante ({{ sizeof($topSo) }})</a></h4>
                         <div class="progress-border">
                             <div class="progress-green progress-bar" style="height:24px;width:{{ $promTop }}%">{{ number_format($promTop,2) }}%</div>
                         </div>
@@ -267,7 +267,7 @@
             <div class="panel-group" id="middleSo">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h4><a data-toggle="collapse" data-parent="#middleSo" href="#middleSoDetail"><span class="glyphicon glyphicon-plus"></span>Numerales con cumplimiento entre 60% y 84.9% ({{ sizeof($midSo) }})</a></h4>
+                        <h4><a data-toggle="collapse" data-parent="#middleSo" href="#middleSoDetail"><span class="glyphicon glyphicon-chevron-right"></span>Numerales con cumplimiento entre 60% y 84.9% ({{ sizeof($midSo) }})</a></h4>
                         <div class="progress-border">
                             <div  class="progress-yellow progress-bar" style="height:24px;width:{{ $promMid }}%">{{ number_format($promMid,2) }}%</div>
                         </div>
@@ -292,7 +292,7 @@
             <div class="panel-group" id="lowerSo">
                 <div class="panel">
                     <div class="panel-heading">
-                        <h4><a data-toggle="collapse" data-parent="#lowerSo" href="#lowerSoDetail"><span class="glyphicon glyphicon-plus"></span>Numerales con cumplimiento menor a 60% ({{ sizeof($lowSo) }})</a></h4>
+                        <h4><a data-toggle="collapse" data-parent="#lowerSo" href="#lowerSoDetail"><span class="glyphicon glyphicon-chevron-right"></span>Numerales con cumplimiento menor a 60% ({{ sizeof($lowSo) }})</a></h4>
                         <div class="progress-border">
                             <div class="progress-red progress-bar" style="height:24px;width:{{ $promLow }}%">{{ number_format($promLow,2) }}%</div>
                         </div>
