@@ -8,9 +8,15 @@
 				<h2>Descargas</h2>
                 <h3>Bases de datos de monitoreos</h3>
                 <ul>
-                @foreach($rounds as $round)
-                    <li><a href="{{ url('/descargas', $round->id) }}">Datos para {{ $round->name }}</a></li>
-                @endforeach
+                    @foreach($rounds as $round)
+                        <li><a href="{{ url('/descargas', $round->id) }}">Datos para {{ $round->name }}</a></li>
+                    @endforeach
+                </ul>
+                <h3>Niveles de cumplimiento por monitoreo</h3>
+                <ul>
+                    @foreach($rounds as $round)
+                        <li><a href="{{ url('/descargas', [$round->id,2]) }}">Niveles de cumplimiento para {{ $round->name }}</a></li>
+                    @endforeach
                 </ul>
                 <h3>Información de sujetos obligados</h3>
                 <ul>

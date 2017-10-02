@@ -313,6 +313,7 @@ class Load extends Controller
 		if (!$this->active)
 			dd("Deactivated option");
 		$roundId = Request::input('roundId');
+        //get questions to fill an excel
         $roundInfo = DB::table('questions as q')
                         ->join('indicators as i', function($join) {
                             $join->on('q.indicator_id','=','i.id');
@@ -344,16 +345,34 @@ class Load extends Controller
                         ->select('s.name as subject', 'sec.name as sector', 'r.name as round', 'a.name as article', 'n.name as numeral', 'i.question as question', 'q.q_type as q_type', 'q.answer as answer')
                         ->get();
         $roundInfo = collect($roundInfo)->map(function($x){ return(array) $x; })->toArray();
-        //dd($roundInfo);
         \Excel::create('infopublicagt_monitoreo_'.$roundId, function($excel) use($roundInfo, $roundId) {
             $excel->sheet('monitoreo'.$roundId, function($sheet) use ($roundInfo) {
                 $sheet->fromArray($roundInfo);
             });
         })->store('csv', storage_path('monitoreos'));
-
+        
+        //get compliance level of each subject to generate another file
+        $ncInfo = DB::table('subjects as s')
+                    ->join('sectors as se', function($join) {
+                        $join->on('s.sector_id','=','se.id');
+                    })
+                    ->join('tracks as t', function($join) {
+                        $join->on('s.id','=','t.subject_id');
+                    })
+                    ->where('t.round_id',$roundId)
+                    ->orderby('s.id','asc')
+                    ->select('s.id as id','s.name as nombre','se.name as nombre_sector', 's.email as email', 't.score as nivel_cumplimiento')
+                    ->get();
+        $ncInfo = collect($ncInfo)->map(function($x){ return(array) $x; })->toArray();
+        \Excel::create('infopublicagt_nc_'.$roundId, function($excel) use($ncInfo, $roundId) {
+            $excel->sheet('NC'.$roundId, function($sheet) use ($ncInfo) {
+                $sheet->fromArray($ncInfo);
+            });
+        })->store('csv', storage_path('monitoreos'));
+                    
         return redirect(url("/admin/rounds/".$roundId."/edit"))
         ->with([
-            'message'    => "Archivo creado y listo para la descarga",
+            'message'    => "Archivos creados y listos para la descarga",
             'alert-type' => 'success',
             ]);
 

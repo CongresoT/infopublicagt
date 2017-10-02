@@ -790,14 +790,23 @@ class Visualization extends Controller
         return view('downloads', ['rounds'=>$rounds]);   
     }
     
-    public function downloadFile($round_id){
-        $round = Round::find($round_id);
-        if (!$round)
-            dd("404 Not Found - File does not exists");
-        $fileName = 'infopublicagt_monitoreo_'.$round_id.'.csv';
+    public function downloadFile($round_id, $file_type = null){
+        if (($file_type == null) || ($file_type == 1)) {
+            $round = Round::find($round_id);
+            if (!$round)
+                dd("404 Not Found - File does not exists");
+            $fileName = 'infopublicagt_monitoreo_'.$round_id.'.csv';
+        }
+        else {
+            $round = Round::find($round_id);
+            if (!$round)
+                dd("404 Not Found - File does not exists");
+            $fileName = 'infopublicagt_nivel_cumplimiento_'.$round_id.'.csv';
+        }
         $filePath = storage_path('monitoreos/'.$fileName);
-        return response()->download($filePath);
+        return response()->download($filePath);            
     }
+
     
     public function downloadSoFile(){
         $filePath = storage_path('monitoreos/so.csv');

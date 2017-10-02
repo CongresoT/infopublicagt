@@ -52,7 +52,7 @@ Route::get('/avance', 'Visualization@advancement');
 Route::get('/generate_pdfs', 'Visualization@sendPDFs');
 Route::get('/descargas','Visualization@downloads');
 Route::get('/descargas/so','Visualization@downloadSoFile');
-Route::get('/descargas/{round_id?}','Visualization@downloadFile');
+Route::get('/descargas/{round_id?}/{file_type?}','Visualization@downloadFile');
 
 
 /*load scripts*/
