@@ -741,7 +741,18 @@ class Visualization extends Controller
 		$round_previous = $rounds->get(1);
 		if ($round_previous == null)
 			dd("No hay monitoreo anterior para comparar");
-		
+
+		//get available rounds to show on the select box.  As the first round does not have a previous round to compare,it will be excluded
+        $availableRounds = Round::where('is_done', True)
+                                ->where(
+                                    [['created_at', '>', function($q) {
+                                        $q->from('rounds')
+                                            ->selectRaw('min(created_at)');
+                                        }
+                                    ]])
+                                ->orderby('created_at', 'desc')
+                                ->get();
+        
 		$tracks = DB::table('subjects')
 					->join('tracks as r1', function($join) use($round){
 										$join->on('subjects.id', '=', 'r1.subject_id');
@@ -780,7 +791,9 @@ class Visualization extends Controller
 		$equalPerc = ($equalCount * 100)/($upCount+$downCount+$equalCount);
 		$downPerc = ($downCount * 100)/($upCount+$downCount+$equalCount);
 		
-		return view('advancement', ['round'=>$round, 'round_previous'=>$round_previous, 'subjectsUp'=>$subjectsUp, 'subjectsEqual'=>$subjectsEqual, 'subjectsDown'=>$subjectsDown, 'upPerc'=>$upPerc, 'equalPerc'=>$equalPerc, 'downPerc'=>$downPerc]);
+		return view('advancement', ['round'=>$round, 'round_previous'=>$round_previous, 'subjectsUp'=>$subjectsUp, 'subjectsEqual'=>$subjectsEqual, 
+                                        'subjectsDown'=>$subjectsDown, 'upPerc'=>$upPerc, 'equalPerc'=>$equalPerc, 'downPerc'=>$downPerc,
+                                        'availableRounds' => $availableRounds]);
 	}
     
     public function downloads() {

@@ -5,6 +5,7 @@
     <div class="container">
         <h1>Comparativo entre rondas</h1>
         <h2>{{ $round->name }} - {{ $round_previous->name }}</h2>
+        @include('includes.roundselector')
 		<div class="subjectInfo row">
             <div class="panel-group" id="topSo">
                 <div class="panel">
