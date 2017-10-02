@@ -5,7 +5,7 @@ namespace App\Widgets;
 use App\Track;
 use Arrilot\Widgets\AbstractWidget;
 use TCG\Voyager\Facades\Voyager;
-
+use TCG\Voyager\Traits\VoyagerUser;
 
 class TrackDimmer extends AbstractWidget
 {
@@ -22,7 +22,10 @@ class TrackDimmer extends AbstractWidget
      */
     public function run()
     {
-        
+        if (!Voyager::can('browse_tracks')) {
+            return "";
+        }
+
         return view('voyager::dimmer', array_merge($this->config, [
             'icon'   => 'voyager-group',
             'title'  => "Ronda Actual",

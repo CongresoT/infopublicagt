@@ -5,7 +5,7 @@ namespace App\Widgets;
 use App\Sector;
 use Arrilot\Widgets\AbstractWidget;
 use TCG\Voyager\Facades\Voyager;
-
+use TCG\Voyager\Traits\VoyagerUser;
 
 class SectorDimmer extends AbstractWidget
 {
@@ -22,6 +22,10 @@ class SectorDimmer extends AbstractWidget
      */
     public function run()
     {
+        if (!Voyager::can('browse_sectors')) {
+            return "";
+        }
+
         $count = Sector::count();
         $string = $count == 1 ? 'sector' : 'sectores';
 

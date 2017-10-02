@@ -5,7 +5,7 @@ namespace App\Widgets;
 use App\Round;
 use Arrilot\Widgets\AbstractWidget;
 use TCG\Voyager\Facades\Voyager;
-
+use TCG\Voyager\Traits\VoyagerUser;
 
 class RoundDimmer extends AbstractWidget
 {
@@ -22,6 +22,10 @@ class RoundDimmer extends AbstractWidget
      */
     public function run()
     {
+        if (!Voyager::can('browse_rounds')) {
+            return "";
+        }
+
         $count = Round::count();
         $string = $count == 1 ? 'ronda' : 'rondas';
 

@@ -5,7 +5,7 @@ namespace App\Widgets;
 use App\Numeral;
 use Arrilot\Widgets\AbstractWidget;
 use TCG\Voyager\Facades\Voyager;
-
+use TCG\Voyager\Traits\VoyagerUser;
 
 class NumeralDimmer extends AbstractWidget
 {
@@ -22,6 +22,10 @@ class NumeralDimmer extends AbstractWidget
      */
     public function run()
     {
+        if (!Voyager::can('browse_numerals')) {
+            return "";
+        }
+
         $count = Numeral::count();
         $string = $count == 1 ? 'numeral' : 'numerales';
 

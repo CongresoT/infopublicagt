@@ -5,6 +5,7 @@ namespace App\Widgets;
 use App\Indicator;
 use Arrilot\Widgets\AbstractWidget;
 use TCG\Voyager\Facades\Voyager;
+use TCG\Voyager\Traits\VoyagerUser;
 
 
 class IndicatorDimmer extends AbstractWidget
@@ -22,6 +23,9 @@ class IndicatorDimmer extends AbstractWidget
      */
     public function run()
     {
+        if (!Voyager::can('browse_indicators')) {
+            return "";
+        }
         $count = Indicator::count();
         $string = $count == 1 ? 'base de pregunta' : 'bases de preguntas';
 

@@ -5,7 +5,7 @@ namespace App\Widgets;
 use App\Subject;
 use Arrilot\Widgets\AbstractWidget;
 use TCG\Voyager\Facades\Voyager;
-
+use TCG\Voyager\Traits\VoyagerUser;
 
 class SubjectDimmer extends AbstractWidget
 {
@@ -22,6 +22,10 @@ class SubjectDimmer extends AbstractWidget
      */
     public function run()
     {
+        if (!Voyager::can('browse_subjects')) {
+            return "";
+        }
+
         $count = Subject::count();
         $string = $count == 1 ? 'sujeto obligado' : 'sujetos obligados';
 
