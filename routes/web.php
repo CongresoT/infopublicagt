@@ -60,8 +60,8 @@ Route::get('/descargas/{round_id?}','Visualization@downloadFile');
 //Route::get('calc1', 'Load@calcFulfillment');
 Route::post('calc2', 'Load@calcArtFulfillment');
 Route::post('calc3', 'Load@calcSubjectArticle');
-Route::get('calc4', 'Load@createCsv');
-Route::get('calc5', 'Load@createSoCsv');
+Route::post('calc4', 'Load@createCsv');
+Route::post('calc5', 'Load@createSoCsv');
 
 
 Auth::routes();

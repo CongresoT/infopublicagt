@@ -31,6 +31,11 @@
                     <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
                     <button type="submit" class="btn btn-primary save">Calc.Cumplimiento por sujeto obligado</button>
                 </form>
+                <form id="my_form" action="{{ url('calc4') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
+                    <button type="submit" class="btn btn-primary save">Generar Descargable</button>
+                </form>
             </div>
         </div>
         <div class="row">

@@ -312,7 +312,7 @@ class Load extends Controller
 	public function createCsv() {
 		if (!$this->active)
 			dd("Deactivated option");
-		$roundId = $this->roundId;
+		$roundId = Request::input('roundId');
         $roundInfo = DB::table('questions as q')
                         ->join('indicators as i', function($join) {
                             $join->on('q.indicator_id','=','i.id');
@@ -345,12 +345,18 @@ class Load extends Controller
                         ->get();
         $roundInfo = collect($roundInfo)->map(function($x){ return(array) $x; })->toArray();
         //dd($roundInfo);
-        \Excel::create('infopublicagt_monitoreo_'.$this->roundId, function($excel) use($roundInfo) {
-            $excel->sheet('monitoreo'.$this->roundId, function($sheet) use ($roundInfo) {
+        \Excel::create('infopublicagt_monitoreo_'.$roundId, function($excel) use($roundInfo, $roundId) {
+            $excel->sheet('monitoreo'.$roundId, function($sheet) use ($roundInfo) {
                 $sheet->fromArray($roundInfo);
             });
         })->store('csv', storage_path('monitoreos'));
-        dd('file saved');
+
+        return redirect(url("/admin/rounds/".$roundId."/edit"))
+        ->with([
+            'message'    => "Archivo creado y listo para la descarga",
+            'alert-type' => 'success',
+            ]);
+
 	}
     
 	public function createSoCsv() {
@@ -363,6 +369,11 @@ class Load extends Controller
                 $sheet->fromArray($subjectsInfo);
             });
         })->store('csv', storage_path('monitoreos'));
-        dd('file saved');
+
+        return redirect(url("/admin/subjects"))
+        ->with([
+            'message'    => "Archivo creado y listo para la descarga",
+            'alert-type' => 'success',
+            ]);
 	}
 }
