@@ -16,6 +16,15 @@
     <div class="page-content container-fluid">
         @include('voyager::alerts')
         <div class="row">
+            <div class="col-xs-12">
+                <form id="my_form" action="{{ url('mark0') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="trackId" value="{{ $track->id }}">
+                    <button type="submit" class="btn btn-primary save">Marcar como "Sin información"</button>
+                </form>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
                     <div class="panel-body table-responsive">

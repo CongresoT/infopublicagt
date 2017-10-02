@@ -53,7 +53,7 @@ Route::get('/generate_pdfs', 'Visualization@sendPDFs');
 Route::get('/descargas','Visualization@downloads');
 Route::get('/descargas/so','Visualization@downloadSoFile');
 Route::get('/descargas/{round_id?}/{file_type?}','Visualization@downloadFile');
-
+Route::post('mark0', 'AdminTools@mark0');
 
 /*load scripts*/
 //Route::get('load', 'Load@excel');

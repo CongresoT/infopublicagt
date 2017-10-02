@@ -199,10 +199,10 @@ return [
 */
         'widgets' => [
             'App\\Widgets\\TrackDimmer',
+            'App\\Widgets\\SubjectDimmer',
             'App\\Widgets\\RoundDimmer',
             'App\\Widgets\\NumeralDimmer',
             'App\\Widgets\\SectorDimmer',
-            'App\\Widgets\\SubjectDimmer',
             'App\\Widgets\\IndicatorDimmer',
             
         ],
