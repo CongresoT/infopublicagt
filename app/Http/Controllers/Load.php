@@ -223,9 +223,13 @@ class Load extends Controller
 				$numeralTrack->round_id = $roundId;
 				$numeralTrack->numeral_id = $numeral->id;
 			}
-			if ($countY+$countN>0) 
+			if ($countY+$countN>0) {
 				$numeralTrack->score = ($countY / ($countY+$countN))*100;
-			$numeralTrack->save();
+                $numeralTrack->save();
+            }
+            else {
+                $numeralTrack->delete();
+            }
 
             return redirect(url("/admin/rounds/".$roundId."/edit"))
             ->with([
@@ -254,6 +258,9 @@ class Load extends Controller
 			$yQuestions = [];
 			$nQuestions = [];
 			$links = [];
+            //delete round_track_numeral since a previous calculated numeral might not apply
+            $rtns = RoundTrackNumeral::where('track_id',$track->id)
+                    ->delete();
 			foreach ($questions as $question){
 				if (($question->q_type == 'c')&&($question->answer != 'NA')){
 					if (!isset($yQuestions[$question->indicator->numeral_id])){

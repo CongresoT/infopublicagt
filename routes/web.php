@@ -56,10 +56,10 @@ Route::get('/descargas/{round_id?}','Visualization@downloadFile');
 
 
 /*load scripts*/
-Route::get('load', 'Load@excel');
-Route::get('calc1', 'Load@calcFulfillment');
-Route::get('calc2', 'Load@calcArtFulfillment');
-Route::get('calc3', 'Load@calcSubjectArticle');
+//Route::get('load', 'Load@excel');
+//Route::get('calc1', 'Load@calcFulfillment');
+Route::post('calc2', 'Load@calcArtFulfillment');
+Route::post('calc3', 'Load@calcSubjectArticle');
 Route::get('calc4', 'Load@createCsv');
 Route::get('calc5', 'Load@createSoCsv');
 

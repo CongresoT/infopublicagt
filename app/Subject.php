@@ -23,4 +23,9 @@ class Subject extends Model
 	public function sectorId(){
 		return $this->sector();
 	}
+    //voyager m2m for numerals
+    public function numerals(){
+         return $this->belongsToMany(Numeral::class, 'numerals_subjects');
+    }
+    
 }

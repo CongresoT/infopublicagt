@@ -51,6 +51,7 @@ class QuestionsAdmin extends BaseVoyagerBreadController
                                     ->where('ns.subject_id', $track->subject_id)
                                     ->where('t.round_id', $track->round_id)
                                     ->where('q.id',Null)
+                                    ->where('i.enabled',True)
                                     ->select('ns.numeral_id as numeral_id', 'i.id as indicator_id', 'i.q_type as indicator_q_type', 't.id as track_id', 'q.id as question_id')
                                     ->get();
 		//get an array to pass to the insert method
@@ -67,7 +68,7 @@ class QuestionsAdmin extends BaseVoyagerBreadController
         if (sizeof($insertIndicators)>0) {
             DB::table('questions')->insert($insertIndicators);
         }
-        //get the questions that should be deleted
+        //get the questions that should be deleted because numeral does not apply
 		$deletableQuestions = DB::table('questions as q')
                                 ->join('tracks as t', function($join) {
                                     $join->on('t.id','=','q.track_id');
@@ -85,12 +86,21 @@ class QuestionsAdmin extends BaseVoyagerBreadController
                                 ->where('t.subject_id', $track->subject_id)
                                 ->where('t.round_id', $track->round_id)
                                 ->where('ns.numeral_id',Null)
-                                ->select('q.id as question_id','ns.numeral_id')
-                                ->get();
+                                ->select('q.id as question_id');
+        //get the questions that should be deleted because indicator has been disabled AND union it to $deletableQuestions
+        $deletableQuestionsUnion = DB::table('questions as q')
+                                        ->join('indicators as i', function($join) {
+                                            $join->on('i.id','=','q.indicator_id');
+                                        })
+                                        ->where('i.enabled',False)
+                                        ->where('q.track_id',$track->id)
+                                        ->union($deletableQuestions)
+                                        ->select('q.id as question_id')
+                                        ->get();
         //delete if needed
-        if(sizeof($deletableQuestions)>0) {
+        if(sizeof($deletableQuestionsUnion)>0) {
             $query = DB::table('questions');
-            foreach($deletableQuestions as $dq){
+            foreach($deletableQuestionsUnion as $dq){
                 $query->orWhere('id',$dq->question_id);
             }
             $query->delete();

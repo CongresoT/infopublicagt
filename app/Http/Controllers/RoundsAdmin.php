@@ -12,12 +12,5 @@ use App\Round;
 
 class RoundsAdmin extends BaseVoyagerBreadController
 {
-    public function showdd(Request $request){
-        dd("esto");
-    }
     
-    public function update(Request $request, $id) {
-        dd("save");
-    }
-
 }
