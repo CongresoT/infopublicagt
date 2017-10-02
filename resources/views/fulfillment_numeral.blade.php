@@ -25,7 +25,7 @@
 											<h5><a href="{{ url('/numeral', $numeral->id) }}">{{ $numeral->name }}</a></h5>
 												{{ $numeral->script }}
 											<div class="progress-border">
-												<div class="{{ $numColor[$numeral->id] }} progress-bar" style="height:24px;width:{{ $numScore[$numeral->id] }}%">{{ $numScore[$numeral->id] }}%</div>
+												<div class="{{ $numColor[$numeral->id] }} progress-bar" style="height:24px;width:{{ $numScore[$numeral->id] }}%">{{ number_format($numScore[$numeral->id],2) }}%</div>
 											</div>
 									</div>
 									@endforeach

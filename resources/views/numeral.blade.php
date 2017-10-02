@@ -5,7 +5,7 @@
 <script>
 	var data = [
 		@foreach($tracksNumeral as $tn)
-			{date:'{{ date("m-Y", strtotime($tn->round->year_num.str_pad($tn->round->month_num,2,"0",STR_PAD_LEFT)."01")) }}', close: {{ $tn->score }}}, 
+			{date:'{{ date("m-Y", strtotime($tn->round->year_num.str_pad($tn->round->month_num,2,"0",STR_PAD_LEFT)."01")) }}', close: {{ number_format($tn->score,2) }}}, 
 		@endforeach
     ];
 
@@ -161,7 +161,7 @@
             .attr("transform", "translate(50, 30)")
             .attr('font-size', '1.25em')
             .attr('y', 25)
-            .text("{{ $score }}%");
+            .text("{{ number_format($score,2) }}%");
     }
 	
     jQuery(document).ready(function() {
@@ -215,7 +215,7 @@
 									<div class="subject col-xs-12">
 										<h5><a href="{{ url('/sujeto', $top->track->subject->id) }}">{{ $top->track->subject->name }}</a></h5>
 										<div class="progress-border">
-											<div class="progress-green progress-bar" style="height:24px;width:{{ $top->score }}%">{{ $top->score }}%</div>
+											<div class="progress-green progress-bar" style="height:24px;width:{{ $top->score }}%">{{ number_format($top->score,2) }}%</div>
 										</div>
 									</div>
 								@endforeach
@@ -239,7 +239,7 @@
 									<div class="subject col-xs-12">
 										<h5><a href="{{ url('/sujeto', $mid->track->subject->id) }}">{{ $mid->track->subject->name }}</a></h5>
 										<div class="progress-border">
-											<div class="progress-yellow progress-bar" style="height:24px;width:{{ $mid->score }}%">{{ $mid->score }}%</div>
+											<div class="progress-yellow progress-bar" style="height:24px;width:{{ $mid->score }}%">{{ number_format($mid->score,2) }}%</div>
 										</div>
 									</div>
 								@endforeach
@@ -263,7 +263,7 @@
 									<div class="subject col-xs-12">
 										<h5><a href="{{ url('/sujeto', $low->track->subject->id) }}">{{ $low->track->subject->name }}</a></h5>
 										<div class="progress-border">
-											<div class="progress-red progress-bar" style="height:24px;width:{{ $low->score }}%">{{ $low->score }}%</div>
+											<div class="progress-red progress-bar" style="height:24px;width:{{ $low->score }}%">{{ number_format($low->score,2) }}%</div>
 										</div>
 									</div>
 								@endforeach

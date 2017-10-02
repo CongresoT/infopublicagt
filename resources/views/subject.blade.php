@@ -6,7 +6,7 @@
 	
     var data = [
 		@foreach($tracksSubject as $ts)
-			{date:'{{ date("m-Y", strtotime($ts->round->year_num.str_pad($ts->round->month_num,2,"0",STR_PAD_LEFT)."01")) }}', close: {{ $ts->score }}}, 
+			{date:'{{ date("m-Y", strtotime($ts->round->year_num.str_pad($ts->round->month_num,2,"0",STR_PAD_LEFT)."01")) }}', close: {{ number_format($ts->score,2) }}}, 
 		@endforeach
     ];
 	
@@ -179,7 +179,7 @@
             .attr("transform", "translate(50, 30)")
             .attr('font-size', '1.25em')
             .attr('y', 25)
-            .text("{{ $score }}%");
+            .text("{{ number_format($score,2) }}%");
     }
 	
     jQuery(document).ready(function() {
@@ -255,7 +255,7 @@
 										<h5><a href="{{ url('/numeral', $top->numeral->id) }}">{{ $top->numeral->article->name }} - {{ $top->numeral->name }}</a></h5>
 											{{ $top->numeral->script }}
 										<div class="progress-border">
-											<div @if($top->links <> '' ) data-toggle="tooltip" title="Informaci&oacute;n encontrada en {{ $top->links }}" @endif class="progress-green progress-bar" style="height:24px;width:{{ $top->score }}%">{{ $top->score }}%</div>
+											<div @if($top->links <> '' ) data-toggle="tooltip" title="Informaci&oacute;n encontrada en {{ $top->links }}" @endif class="progress-green progress-bar" style="height:24px;width:{{ $top->score }}%">{{ number_format($top->score,2) }}%</div>
 										</div>
 									</div>
 								@endforeach
@@ -280,7 +280,7 @@
 										<h5><a href="{{ url('/numeral', $mid->numeral->id) }}">{{ $mid->numeral->article->name }} - {{ $mid->numeral->name }}</a></h5>
 											{{ $mid->numeral->script }}
 										<div class="progress-border">
-											<div @if($mid->links <> '' ) data-toggle="tooltip" title="Informaci&oacute;n encontrada en {{ $mid->links }}" @endif class="progress-yellow progress-bar" style="height:24px;width:{{ $mid->score }}%">{{ $mid->score }}%</div>
+											<div @if($mid->links <> '' ) data-toggle="tooltip" title="Informaci&oacute;n encontrada en {{ $mid->links }}" @endif class="progress-yellow progress-bar" style="height:24px;width:{{ $mid->score }}%">{{ number_format($mid->score,2) }}%</div>
 										</div>
 									</div>
 								@endforeach
@@ -305,7 +305,7 @@
 										<h5><a href="{{ url('/numeral', $low->numeral->id) }}">{{ $low->numeral->article->name }} - {{ $low->numeral->name }}</a></h5>
 										{{ $low->numeral->script }}
 										<div class="progress-border">
-											<div @if($low->links <> '' ) data-toggle="tooltip" title="Informaci&oacute;n encontrada en {{ $low->links }}" @endif class="progress-red progress-bar" style="height:24px;width:{{ $low->score }}%">{{ $low->score }}%</div>
+											<div @if($low->links <> '' ) data-toggle="tooltip" title="Informaci&oacute;n encontrada en {{ $low->links }}" @endif class="progress-red progress-bar" style="height:24px;width:{{ $low->score }}%">{{ number_format($low->score,2) }}%</div>
 										</div>
 									</div>
 								@endforeach

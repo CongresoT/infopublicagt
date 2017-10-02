@@ -28,7 +28,7 @@
 											<div class="subject col-xs-12">
 												<h5><a href="{{ url('/sujeto', $track->subject->id) }}">{{ $track->subject->name }}</a></h5>
 												<div class="progress-border">
-													<div class="{{ $subjectColor[$track->subject->id] }} progress-bar" style="height:24px;width:{{ $track->score }}%">{{ $track->score }}%</div>
+													<div class="{{ $subjectColor[$track->subject->id] }} progress-bar" style="height:24px;width:{{ $track->score }}%">{{ number_format($track->score,2) }}%</div>
 												</div>
 											</div>
 										@endforeach

@@ -30,7 +30,7 @@
 											<h5><a href="{{ url('/numeral', $tNumeral->numeral->id) }}">{{ $tNumeral->numeral->name }}</a></h5>
 												{{ $tNumeral->numeral->script }}
 											<div class="progress-border">
-												<div class="{{ $numColor[$tNumeral->numeral->id] }} progress-bar" style="height:24px;width:{{ $tNumeral->score }}%">{{ $tNumeral->score }}%</div>
+												<div class="{{ $numColor[$tNumeral->numeral->id] }} progress-bar" style="height:24px;width:{{ $tNumeral->score }}%">{{ number_format($tNumeral->score,2) }}%</div>
 											</div>
 									</div>
 									@endforeach

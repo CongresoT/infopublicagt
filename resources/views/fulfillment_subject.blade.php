@@ -8,7 +8,7 @@ json = {
             name:"root",
             children: [
                 {
-                    name:"de 85% en adelante",
+                    name:"cumplimiento de 85% en adelante",
                     color:"#32CD32",
                     score:"{{ sizeof($highTr) }}",
                     children: [
@@ -17,13 +17,13 @@ json = {
                                 name:"{{ $h->subject->name }}",
                                 id:"{{ $h->subject->id }}",
                                 size:10, 
-                                score: {{ $h->score }},
+                                score: {{ number_format($h->score,2) }},
                             },
                         @endforeach
                     ]
                 },
                 {
-                    name:"entre 60% y 85%",
+                    name:"cumplimiento entre 60% y 85%",
                     color:"#FF8C00",
                     score:"{{ sizeof($mediumTr) }}",
                     children: [
@@ -32,13 +32,13 @@ json = {
                                 name:"{{ $m->subject->name }}",
                                 id:"{{ $m->subject->id }}",
                                 size:10, 
-                                score: {{ $m->score }},
+                                score: {{ number_format($m->score,2) }},
                             },
                         @endforeach
                     ]
                 },
                 {
-                    name:"menos de 60%",
+                    name:"cumplimiento menor a 60%",
                     color:"#B22222",
                     score:"{{ sizeof($lowTr) }}",
                     children: [
@@ -47,7 +47,7 @@ json = {
                                 name:"{{ $l->subject->name }}",
                                 id:"{{ $l->subject->id }}",
                                 size:10, 
-                                score: {{ $l->score }},
+                                score: {{ number_format($l->score,2) }},
                             },
                         @endforeach
                     ]
