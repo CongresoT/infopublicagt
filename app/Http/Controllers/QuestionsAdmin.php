@@ -155,113 +155,101 @@ class QuestionsAdmin extends BaseVoyagerBreadController
 
         if (!$request->ajax()) {
             $data = call_user_func([$dataType->model_name, 'findOrFail'], $id);
-            //prevent to chagne the indicator
-            //if ($data['attributes']['indicator_id'] == $request->request->get('indicator_id')) {
-                //if question is parent, retrieve questions that have that question as parent and set the NA to the corresponding ones (dependig if Y or N)
-                //the other corresponding should have Null value.  All of this, only if user changed answer, if not, leave the same
-                if($data['attributes']['q_type'] == 'p'){
-                    //check if user changed answer in order to proceed
-                    if ($data['attributes']['answer'] != $request->request->get('answer')) {
-                        //exclude parent questions with NA answer
-                        if(($request->request->get('answer') == 'Y')||($request->request->get('answer') == 'N')) {
-                            $answer = $request->request->get('answer')=='Y'?True:False;
-                            $naChilds = DB::table('indicators as i')
-                                            ->join('questions as q', function($join) {
-                                                $join->on('q.indicator_id','=','i.id');
-                                            })
-                                            ->where('i.indicator_id', $data['attributes']['indicator_id'])
-                                            ->where('q.track_id', $data['attributes']['track_id'])
-                                            ->where('i.parent_response',!$answer)
-                                            ->select('q.id as id')
-                                            ->get();
-                            if (sizeof($naChilds)>0) {
-                                $query = DB::table('questions');
-                                foreach($naChilds as $c){
-                                    $query->orWhere('id', $c->id);
-                                }
-                                $query->update(['answer' => 'NA']);
+            //if question is parent, retrieve questions that have that question as parent and set the NA to the corresponding ones (dependig if Y or N)
+            //the other corresponding should have Null value.  All of this, only if user changed answer, if not, leave the same
+            if($data['attributes']['q_type'] == 'p'){
+                //check if user changed answer in order to proceed
+                if ($data['attributes']['answer'] != $request->request->get('answer')) {
+                    //exclude parent questions with NA answer
+                    if(($request->request->get('answer') == 'Y')||($request->request->get('answer') == 'N')) {
+                        $answer = $request->request->get('answer')=='Y'?True:False;
+                        $naChilds = DB::table('indicators as i')
+                                        ->join('questions as q', function($join) {
+                                            $join->on('q.indicator_id','=','i.id');
+                                        })
+                                        ->where('i.indicator_id', $data['attributes']['indicator_id'])
+                                        ->where('q.track_id', $data['attributes']['track_id'])
+                                        ->where('i.parent_response',!$answer)
+                                        ->select('q.id as id')
+                                        ->get();
+                        if (sizeof($naChilds)>0) {
+                            $query = DB::table('questions');
+                            foreach($naChilds as $c){
+                                $query->orWhere('id', $c->id);
                             }
-                            $nullChilds = DB::table('indicators as i')
-                                            ->join('questions as q', function($join) {
-                                                $join->on('q.indicator_id','=','i.id');
-                                            })
-                                            ->where('i.indicator_id', $data['attributes']['indicator_id'])
-                                            ->where('q.track_id', $data['attributes']['track_id'])
-                                            ->where('i.parent_response',$answer)
-                                            ->select('q.id as id')
-                                            ->get();
-                            if (sizeof($nullChilds)>0) {
-                                $query = DB::table('questions');
-                                foreach($nullChilds as $c){
-                                    $query->orWhere('id', $c->id);
-                                }
-                                $query->update(['answer' => Null]);
+                            $query->update(['answer' => 'NA']);
+                        }
+                        $nullChilds = DB::table('indicators as i')
+                                        ->join('questions as q', function($join) {
+                                            $join->on('q.indicator_id','=','i.id');
+                                        })
+                                        ->where('i.indicator_id', $data['attributes']['indicator_id'])
+                                        ->where('q.track_id', $data['attributes']['track_id'])
+                                        ->where('i.parent_response',$answer)
+                                        ->select('q.id as id')
+                                        ->get();
+                        if (sizeof($nullChilds)>0) {
+                            $query = DB::table('questions');
+                            foreach($nullChilds as $c){
+                                $query->orWhere('id', $c->id);
                             }
+                            $query->update(['answer' => Null]);
                         }
                     }
                 }
+            }
 
-                $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
-                
-                //search next question to redirect to that one.
-                $questionnaire = DB::table('numerals_subjects as ns')
-                                        ->join('indicators as i', function($join) {
-                                            $join->on('i.numeral_id','=','ns.numeral_id');
-                                        })
-                                        ->join('tracks as t', function($join) {
-                                            $join->on('t.subject_id','=','ns.subject_id');
-                                        })
-                                        ->leftJoin('questions as q', function($join) {
-                                            $join->on('q.track_id','=','t.id');
-                                            $join->on('q.indicator_id','=','i.id');
-                                        })
-                                        ->where('t.id', $data['attributes']['track_id'])
-                                        ->where('q.answer',Null)
-                                        ->orWhere('q.id',$id)
-                                        ->orderby('ns.numeral_id','asc')
-                                        ->orderby('i.id','asc')
-                                        ->select('q.id')
-                                        ->get();
-                //search the it to get the next 
-                $next = 0;
-                foreach($questionnaire as $q){
-                    //find the current, assign it to next, so when $next has the value of the current, the next iteration will be the searched
-                    if($next == $id){
-                        $next = $q->id;
-                        break;
-                    }
-                    if($q->id == $id)
-                        $next = $id;
+            $this->insertUpdateData($request, $slug, $dataType->editRows, $data);
+            
+            //search next question to redirect to that one.
+            $questionnaire = DB::table('numerals_subjects as ns')
+                                    ->join('indicators as i', function($join) {
+                                        $join->on('i.numeral_id','=','ns.numeral_id');
+                                    })
+                                    ->join('tracks as t', function($join) {
+                                        $join->on('t.subject_id','=','ns.subject_id');
+                                    })
+                                    ->leftJoin('questions as q', function($join) {
+                                        $join->on('q.track_id','=','t.id');
+                                        $join->on('q.indicator_id','=','i.id');
+                                    })
+                                    ->where('t.id', $data['attributes']['track_id'])
+                                    ->where('q.answer',Null)
+                                    ->orWhere('q.id',$id)
+                                    ->orderby('ns.numeral_id','asc')
+                                    ->orderby('i.id','asc')
+                                    ->select('q.id')
+                                    ->get();
+            //search the it to get the next 
+            $next = 0;
+            foreach($questionnaire as $q){
+                //find the current, assign it to next, so when $next has the value of the current, the next iteration will be the searched
+                if($next == $id){
+                    $next = $q->id;
+                    break;
                 }
-                if(($next == 0)||($next == $id)) {
-                    //it was the last one, or for some reason did not find it
-                    //redirect it to the view of the trackquestions
-                    return redirect(url("/admin/trackquestions", ['track_id' => $data['attributes']['track_id']]))
-                    ->with([
-                        'message'    => "Successfully Updated {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                        ]);
-                }
-                else {
-                    //if it find it, redirect it to the next question
-                    return redirect()
-                    ->route("voyager.{$dataType->slug}.edit", ['id' => $next])
-                    ->with([
-                        'message'    => "Successfully Updated {$dataType->display_name_singular}",
-                        'alert-type' => 'success',
-                        ]);
-                }
-                
-            /*}
-            else {
-                //user tried to change the question, you can't change the question!
-                return redirect()
-                ->route("voyager.{$dataType->slug}.edit", ['id' => $id])
+                if($q->id == $id)
+                    $next = $id;
+            }
+            if(($next == 0)||($next == $id)) {
+                //it was the last one, or for some reason did not find it
+                //redirect it to the view of the trackquestions
+                return redirect(url("/admin/trackquestions", ['track_id' => $data['attributes']['track_id']]))
                 ->with([
-                    'message'    => "Error al guardar, no se puede cambiar la pregunta",
-                    'alert-type' => 'error',
+                    'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
                     ]);
-            }*/
+            }
+            else {
+                //if it find it, redirect it to the next question
+                return redirect()
+                ->route("voyager.{$dataType->slug}.edit", ['id' => $next])
+                ->with([
+                    'message'    => "Successfully Updated {$dataType->display_name_singular}",
+                    'alert-type' => 'success',
+                    ]);
+            }
+            
         }
     }
 }

@@ -75,7 +75,7 @@
                         </div><!-- panel-body -->
 
                         <div class="panel-footer">
-                            <button type="submit" class="btn btn-primary save">Grabar</button>
+                            <button type="submit" class="btn btn-primary save">Guardar</button>
                         </div>
                     </form>
 
