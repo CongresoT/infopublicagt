@@ -814,7 +814,7 @@ class Visualization extends Controller
             $round = Round::find($round_id);
             if (!$round)
                 dd("404 Not Found - File does not exists");
-            $fileName = 'infopublicagt_nivel_cumplimiento_'.$round_id.'.csv';
+            $fileName = 'infopublicagt_nc_'.$round_id.'.csv';
         }
         $filePath = storage_path('monitoreos/'.$fileName);
         return response()->download($filePath);            
