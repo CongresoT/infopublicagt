@@ -4,7 +4,7 @@
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> Sujetos
+        <i class="{{ $dataType->icon }}"></i> Numerales
         @if (Voyager::can('add_'.$dataType->name))
             <a href="{{ route('voyager.'.$dataType->slug.'.create') }}" class="btn btn-success">
                 <i class="voyager-plus"></i> Agregar
@@ -17,14 +17,6 @@
 @section('content')
     <div class="page-content container-fluid">
         @include('voyager::alerts')
-        <div class="row">
-            <div class="col-xs-12">
-                <form id="my_form" action="{{ url('calc5') }}" method="post">
-                    {{ csrf_field() }}
-                    <button type="submit" class="btn btn-primary save">Crear archivo actualizado de Sujetos Obligados</button>
-                </form>
-            </div>
-        </div>
         <div class="row">
             <div class="col-md-12">
                 <div class="panel panel-bordered">
@@ -106,6 +98,11 @@
                                         </td>
                                     @endforeach
                                     <td class="no-sort no-click" id="bread-actions">
+                                        @if (Voyager::can('delete_'.$dataType->name))
+                                            <a href="javascript:;" title="Delete" class="btn btn-sm btn-danger pull-right delete" data-id="{{ $data->id }}" id="delete-{{ $data->id }}">
+                                                <i class="voyager-trash"></i> <span class="hidden-xs hidden-sm">Borrar</span>
+                                            </a>
+                                        @endif
                                         @if (Voyager::can('edit_'.$dataType->name))
                                             <a href="{{ route('voyager.'.$dataType->slug.'.edit', $data->id) }}" title="Edit" class="btn btn-sm btn-primary pull-right edit">
                                                 <i class="voyager-edit"></i> <span class="hidden-xs hidden-sm">Editar</span>

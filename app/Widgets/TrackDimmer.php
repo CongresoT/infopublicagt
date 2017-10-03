@@ -31,7 +31,7 @@ class TrackDimmer extends AbstractWidget
             'title'  => "Ronda Actual",
             'text'   => "Presiona el botón para ver/ingresar la información del monitoreo actual",
             'button' => [
-                'text' => 'Ir a monitorear',
+                'text' => 'Monitorear',
                 'link' => route('voyager.tracks.index'),
             ],
             'image' => voyager_asset('images/widget-backgrounds/03.png'),

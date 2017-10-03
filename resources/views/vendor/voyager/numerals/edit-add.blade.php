@@ -5,14 +5,14 @@
 @stop
 
 @if(isset($dataTypeContent->id))
-    @section('page_title','Editar ronda')
+    @section('page_title','Editar numeral')
 @else
-    @section('page_title','Agregar ronda')
+    @section('page_title','Agregar numeral')
 @endif
 
 @section('page_header')
     <h1 class="page-title">
-        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Editar ' }}@else{{ 'Nueva ' }}@endif ronda
+        <i class="{{ $dataType->icon }}"></i> @if(isset($dataTypeContent->id)){{ 'Editar' }}@else{{ 'Nuevo' }}@endif numeral
     </h1>
     @include('voyager::multilingual.language-selector')
 @stop
@@ -20,31 +20,12 @@
 @section('content')
     <div class="page-content container-fluid">
         <div class="row">
-            <div class="col-xs-12">
-                <form id="my_form" action="{{ url('calc2') }}" method="post">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
-                    <button type="submit" class="btn btn-primary save">Calc.Cumplimiento de artículos</button>
-                </form>
-                <form id="my_form" action="{{ url('calc3') }}" method="post">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
-                    <button type="submit" class="btn btn-primary save">Calc.Cumplimiento por sujeto obligado</button>
-                </form>
-                <form id="my_form" action="{{ url('calc4') }}" method="post">
-                    {{ csrf_field() }}
-                    <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
-                    <button type="submit" class="btn btn-primary save">Generar Descargable</button>
-                </form>
-            </div>
-        </div>
-        <div class="row">
             <div class="col-md-12">
 
                 <div class="panel panel-bordered">
 
                     <div class="panel-heading">
-                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Editar ' }}@else{{ 'Agregar ' }}@endif ronda</h3>
+                        <h3 class="panel-title">@if(isset($dataTypeContent->id)){{ 'Editar' }}@else{{ 'Agregar' }}@endif Numeral</h3>
                     </div>
                     <!-- /.box-header -->
                     <!-- form start -->
