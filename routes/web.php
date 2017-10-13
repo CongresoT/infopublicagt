@@ -49,7 +49,7 @@ Route::get('/numeral/{numeral_id}/{round_id}', 'Visualization@numeral');
 Route::get('/numeral/{numeral_id}', 'Visualization@numeral');
 Route::get('/lista_numeral/{round_id?}', 'Visualization@numSorted');
 Route::get('/avance/{round_id?}', 'Visualization@advancement');
-Route::get('/generate_pdfs', 'Visualization@sendPDFs');
+Route::post('/generate_pdfs', 'Visualization@sendPDFs');
 Route::get('/descargas','Visualization@downloads');
 Route::get('/descargas/so','Visualization@downloadSoFile');
 Route::get('/descargas/{round_id?}/{file_type?}','Visualization@downloadFile');

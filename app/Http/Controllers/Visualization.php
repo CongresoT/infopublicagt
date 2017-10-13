@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\DB;
 use App\Track;
 use App\Round;
@@ -17,6 +17,7 @@ use Illuminate\Support\Facades\Route;
 use App\Jobs\SendReportEmail;
 use Mail;
 use Illuminate\Support\Facades\Storage;
+use Request;
 
 
 class Visualization extends Controller
@@ -537,7 +538,7 @@ class Visualization extends Controller
 		ini_set("memory_limit","256M");
 		$subject = Subject::find($subject_id);
 		if(!$subject)
-			dd("404 Not Found");
+			dd("404 Not Found, not subject_id");
 		if ($round_id == null){
 			$round = Round::where('is_done', True)
 							->orderby('created_at', 'desc')->first();
@@ -545,7 +546,7 @@ class Visualization extends Controller
 		else{
 			$round = Round::find($round_id);
 			if (!$round)
-				dd("404 Not Found");
+				dd("404 Not Found, not round_id");
 		}
 		$tracks = Track::where('round_id', $round->id)
 				->orderby('score','desc')
@@ -563,7 +564,7 @@ class Visualization extends Controller
 						->where('subject_id', $subject->id)
 						->first();
 		if (!$track)
-			dd("404 not Found");
+			dd("404 not Found, track not found. Check if round is finished.");
 		$rtns = RoundTrackNumeral::where('track_id',$track->id)
 									->orderby('score','desc')
 									->get();
@@ -576,19 +577,26 @@ class Visualization extends Controller
 
 	}
 	
-	public function sendPDFs($round_id=null){
+	public function sendPDFs(){
 		set_time_limit(0);
 		ini_set("memory_limit","256M");
+        $roundId = Request::input('roundId');
 		$subjects = Subject::where('enabled',True)
 					->orderby('id','asc')
 					->get();
 		foreach($subjects as $subject){
 			if ($subject->email != '') {
 				echo (" generating pdf for ".$subject->id.". Delay: ".$subject->id);
-				$this->subjectPDF($subject->id, $round_id, $subject->id);
+				$this->subjectPDF($subject->id, $roundId, $subject->id);
+                echo ("this line");
 			}
 		}
-		
+        echo ("this line");
+        return redirect(url("/admin/rounds/".$roundId."/edit"))
+        ->with([
+            'message'    => "Los correos estan en cola para enviarse",
+            'alert-type' => 'success',
+            ]);
 	}
 
 	public function numeral($numeral_id, $round_id=null){

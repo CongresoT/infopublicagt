@@ -36,6 +36,12 @@
                     <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
                     <button type="submit" class="btn btn-primary save">Generar Descargable</button>
                 </form>
+                <form id="my_form" action="{{ url('generate_pdfs') }}" method="post">
+                    {{ csrf_field() }}
+                    <input type="hidden" name="roundId" value="{{ $dataTypeContent->id }}">
+                    <button type="submit" class="btn btn-primary save">Enviar correos de nivel de cumplimiento</button>
+                </form>
+
             </div>
         </div>
         <div class="row">
