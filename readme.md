@@ -68,6 +68,7 @@ $git clone https://github.com/CongresoT/infopublicagt.git
 
 Entrar a la carpeta “infopublicagt” y ejecutar el comando:
 ```
+$cd infopublicagt
 $composer install
 ```
 
@@ -112,15 +113,24 @@ $php artisan tinker
 Se desplegará una consola interactiva, ejecutar los siguientes comandos:
 ```
 >>>$user = new App\User();
->>>$user->password = Hash::make(‘password deseado’);
->>>$user->email = ‘email@dominio.com’;
->>>$user->name = ‘Nombre Usuario’;
+>>>$user->password = Hash::make('password deseado');
+>>>$user->email = 'email@dominio.com';
+>>>$user->name = 'Nombre Usuario';
 >>>$user->save();
 >>>exit
 ```
 
+Luego ejecutar los comandos
+```
+$php artisan voyager:admin email@dominio.com
+$rm public/storage
+$cd public
+$ln -s ../storage/app/public/ storage
+```
+
 Poner como propietario y grupo del propietario de la carpeta al usuario de Apache
 ```
+$cd ../..
 #chown -R www-data:www-data infopublicagt/
 ```
 
