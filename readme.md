@@ -119,5 +119,11 @@ Se desplegará una consola interactiva, ejecutar los siguientes comandos:
 >>>exit
 ```
 
+Poner como propietario y grupo del propietario de la carpeta al usuario de Apache
+```
+#chown -R www-data:www-data infopublicagt/
+```
+
+
 En este momento ya es posible usar el sitio en la URL que haya sido configurada para Apache.
 Se puede entrar a la parte administrativa en la URL/admin, con el usuario y contraseña configurado en los últimos comandos.
