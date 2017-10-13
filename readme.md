@@ -1,4 +1,4 @@
-# Instalació�n
+# Instalación
 ## Requisitos
 - Entorno con Apache, Mysql, PHP 5.6.30+, Composer y Git instalado
 - Base de datos de mysql creada y un usuario para su uso
