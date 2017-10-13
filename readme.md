@@ -114,7 +114,8 @@ Se desplegará una consola interactiva, ejecutar los siguientes comandos:
 >>>$user = new App\User();
 >>>$user->password = Hash::make(‘password deseado’);
 >>>$user->email = ‘email@dominio.com’;
->>>$user->sabe();
+>>>$user->name = ‘Nombre Usuario’;
+>>>$user->save();
 >>>exit
 ```
 
