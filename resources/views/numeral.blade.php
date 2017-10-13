@@ -190,7 +190,7 @@
             <div class="col-xs-4">
                 <div id="advancement" class="center-block">
                     <span @if($advancement > 0) class="arrow-up" @elseif($advancement < 0) class="arrow-down" @else class="center-block" @endif></span>
-                    <div @if($advancement > 0) class="progress-qty-green" @elseif($advancement < 0) class="progress-qty-red" @else  class="progress-qty-yellow" @endif>@if(isset($advancement)){{ number_format(abs($advancement),1) }}%@endif</div>
+                    <div @if($advancement > 0) class="progress-qty-green" @elseif($advancement < 0) class="progress-qty-red" @else  class="progress-qty-yellow" @endif>@if(isset($advancement)){{ number_format(abs($advancement),1) }}@else = %@endif</div>
                 </div>
 				<h6 class="center-block">Respecto al monitoreo anterior</h6>
             </div>
