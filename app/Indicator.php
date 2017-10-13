@@ -22,9 +22,13 @@ class Indicator extends Model
 		return $this->hasMany('App\Question');
 	}
 
-	//as function article() but to be used in voyager views
+	//as function numeral() but to be used in voyager views
 	public function numeralId(){
 		return $this->numeral();
 	}
+    
+    public function indicatorId(){
+        return $this->belongsTo('App\Indicator');
+    }
 
 }
