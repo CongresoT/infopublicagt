@@ -43,7 +43,7 @@ Route::get('/sector/{round_id?}', 'Visualization@sector');
 Route::get('/cumplimiento_num/{round_id?}', 'Visualization@numFulfillment');
 Route::get('/sujeto/{subject_id}', 'Visualization@subject');
 Route::get('/sujeto/{subject_id}/{round_id}', 'Visualization@subject');
-Route::get('/sujeto/pdf/{subject_id}/{round_id}', 'Visualization@subjectPDF');
+//Route::get('/sujeto/pdf/{subject_id}/{round_id}', 'Visualization@subjectPDF');
 Route::get('/sujeto/viewpdf/{subject_id}/{round_id}', 'Visualization@subjectViewPDF');
 Route::get('/numeral/{numeral_id}/{round_id}', 'Visualization@numeral');
 Route::get('/numeral/{numeral_id}', 'Visualization@numeral');
