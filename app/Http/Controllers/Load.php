@@ -366,7 +366,7 @@ class Load extends Controller
         $ncInfo = collect($ncInfo)->map(function($x){ return(array) $x; })->toArray();
         \Excel::create('infopublicagt_nc_'.$roundId, function($excel) use($ncInfo, $roundId) {
             $excel->sheet('NC'.$roundId, function($sheet) use ($ncInfo) {
-                $sheet->fromArray($ncInfo);
+                $sheet->fromArray($ncInfo, null, 'A1', true);
             });
         })->store('csv', storage_path('monitoreos'));
                     
