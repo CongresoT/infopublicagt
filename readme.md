@@ -1,5 +1,5 @@
-#Instalación
-##Requisitos
+# Instalació�n
+## Requisitos
 - Entorno con Apache, Mysql, PHP 5.6.30+, Composer y Git instalado
 - Base de datos de mysql creada y un usuario para su uso
 - Configurar apache para servir el sitio en la carpeta donde desee instalarse
@@ -58,7 +58,7 @@
   - zip
   - zlib
 
-##Instrucciones
+## Instrucciones
 
 Posicionarse en la carpeta donde desea instalarse y ejecutar:
 
