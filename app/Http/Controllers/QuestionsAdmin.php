@@ -203,28 +203,28 @@ class QuestionsAdmin extends BaseVoyagerBreadController
             
             //search next question to redirect to that one.
             $questionnaire = DB::table('numerals_subjects as ns')
-                                    ->join('indicators as i', function($join) {
-                                        $join->on('i.numeral_id','=','ns.numeral_id');
-                                    })
                                     ->join('tracks as t', function($join) {
                                         $join->on('t.subject_id','=','ns.subject_id');
+                                    })
+                                    ->join('indicators as i', function($join) {
+                                        $join->on('i.numeral_id','=','ns.numeral_id');
                                     })
                                     ->leftJoin('questions as q', function($join) {
                                         $join->on('q.track_id','=','t.id');
                                         $join->on('q.indicator_id','=','i.id');
                                     })
                                     ->where('t.id', $data['attributes']['track_id'])
-                                    ->where('q.answer',Null)
-                                    ->orWhere('q.id',$id)
+                                    //->where('q.answer',Null)
+                                    //->orWhere('q.id',$id)
                                     ->orderby('ns.numeral_id','asc')
                                     ->orderby('i.id','asc')
-                                    ->select('q.id')
+                                    ->select('q.id','q.answer')
                                     ->get();
             //search the it to get the next 
             $next = 0;
             foreach($questionnaire as $q){
                 //find the current, assign it to next, so when $next has the value of the current, the next iteration will be the searched
-                if($next == $id){
+                if(($next == $id)&&($q->answer == null)){
                     $next = $q->id;
                     break;
                 }
