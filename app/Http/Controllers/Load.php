@@ -230,13 +230,12 @@ class Load extends Controller
             else {
                 $numeralTrack->delete();
             }
-
-            return redirect(url("/admin/rounds/".$roundId."/edit"))
-            ->with([
-                'message'    => "Calculo de cumplimiento de artículos para la ronda finalizado",
-                'alert-type' => 'success',
-                ]);
 		}
+        return redirect(url("/admin/rounds/".$roundId."/edit"))
+        ->with([
+            'message'    => "Calculo de cumplimiento de artículos para la ronda finalizado",
+            'alert-type' => 'success',
+            ]);
 	}
 
 	public function calcSubjectArticle() {
