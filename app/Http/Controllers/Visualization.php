@@ -218,13 +218,19 @@ class Visualization extends Controller
 		//sum the scores and add one to the count in order to calculate article avg
 		foreach($articles as $article){
 			foreach($article->numerals as $numeral){
-				$artSum[$article->id] += $numScore[$numeral->id];
-				$artCount[$article->id] += 1;
+                if (isset($numScore[$numeral->id])){
+                    $artSum[$article->id] += $numScore[$numeral->id];
+                    $artCount[$article->id] += 1;
+                }
+                else{
+                    $numScore[$numeral->id] = 0;
+                    $numColor[$numeral->id] = 'progress-red';
+                }
 			}
 		}
 		//calculate avg
 		foreach($articles as $article){
-			if ($artCount > 0){
+			if ($artCount[$article->id] > 0){
 				$artProm[$article->id] = $artSum[$article->id]/$artCount[$article->id];
 			}
 			else {
